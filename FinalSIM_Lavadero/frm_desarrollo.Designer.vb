@@ -22,6 +22,14 @@ Partial Class frm_desarrollo
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.lbl_tiempoSim = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -180,204 +188,254 @@ Partial Class frm_desarrollo
         Me.col_rndLA.HeaderText = "RND (LA)"
         Me.col_rndLA.Name = "col_rndLA"
         Me.col_rndLA.ReadOnly = True
+        Me.col_rndLA.Width = 50
         '
         'col_tentrellegLA
         '
         Me.col_tentrellegLA.HeaderText = "T. Entre Llegadas"
         Me.col_tentrellegLA.Name = "col_tentrellegLA"
         Me.col_tentrellegLA.ReadOnly = True
+        Me.col_tentrellegLA.Width = 70
         '
         'col_hllegadaLA
         '
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.LightSkyBlue
+        Me.col_hllegadaLA.DefaultCellStyle = DataGridViewCellStyle1
         Me.col_hllegadaLA.HeaderText = "H. Llegada"
         Me.col_hllegadaLA.Name = "col_hllegadaLA"
         Me.col_hllegadaLA.ReadOnly = True
+        Me.col_hllegadaLA.Width = 70
         '
         'col_rndTipo
         '
         Me.col_rndTipo.HeaderText = "RND (Tipo)"
         Me.col_rndTipo.Name = "col_rndTipo"
         Me.col_rndTipo.ReadOnly = True
+        Me.col_rndTipo.Width = 50
         '
         'col_tipo
         '
         Me.col_tipo.HeaderText = "Tipo"
         Me.col_tipo.Name = "col_tipo"
         Me.col_tipo.ReadOnly = True
+        Me.col_tipo.Width = 70
         '
         'col_tiempoQA
         '
         Me.col_tiempoQA.HeaderText = "T. (QA)"
         Me.col_tiempoQA.Name = "col_tiempoQA"
         Me.col_tiempoQA.ReadOnly = True
+        Me.col_tiempoQA.Width = 50
         '
         'col_hfinQA
         '
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.LightSkyBlue
+        Me.col_hfinQA.DefaultCellStyle = DataGridViewCellStyle2
         Me.col_hfinQA.HeaderText = "H. Fin"
         Me.col_hfinQA.Name = "col_hfinQA"
         Me.col_hfinQA.ReadOnly = True
+        Me.col_hfinQA.Width = 50
         '
         'col_rndAA
         '
         Me.col_rndAA.HeaderText = "RND (AA)"
         Me.col_rndAA.Name = "col_rndAA"
         Me.col_rndAA.ReadOnly = True
+        Me.col_rndAA.Width = 50
         '
         'col_taspiradoAA
         '
         Me.col_taspiradoAA.HeaderText = "T. Aspirado"
         Me.col_taspiradoAA.Name = "col_taspiradoAA"
         Me.col_taspiradoAA.ReadOnly = True
+        Me.col_taspiradoAA.Width = 70
         '
         'col_hfaspiradoAA
         '
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.LightSkyBlue
+        Me.col_hfaspiradoAA.DefaultCellStyle = DataGridViewCellStyle3
         Me.col_hfaspiradoAA.HeaderText = "H. Fin Aspirado"
         Me.col_hfaspiradoAA.Name = "col_hfaspiradoAA"
         Me.col_hfaspiradoAA.ReadOnly = True
+        Me.col_hfaspiradoAA.Width = 70
         '
         'col_rndFL1
         '
         Me.col_rndFL1.HeaderText = "RND (FL1)"
         Me.col_rndFL1.Name = "col_rndFL1"
         Me.col_rndFL1.ReadOnly = True
+        Me.col_rndFL1.Width = 50
         '
         'col_tlavadoFL1
         '
         Me.col_tlavadoFL1.HeaderText = "T. Lavado"
         Me.col_tlavadoFL1.Name = "col_tlavadoFL1"
         Me.col_tlavadoFL1.ReadOnly = True
+        Me.col_tlavadoFL1.Width = 70
         '
         'col_hflavadoFL1
         '
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.LightSkyBlue
+        Me.col_hflavadoFL1.DefaultCellStyle = DataGridViewCellStyle4
         Me.col_hflavadoFL1.HeaderText = "H. Fin Lavado"
         Me.col_hflavadoFL1.Name = "col_hflavadoFL1"
         Me.col_hflavadoFL1.ReadOnly = True
+        Me.col_hflavadoFL1.Width = 70
         '
         'col_rndFL2
         '
         Me.col_rndFL2.HeaderText = "RND (FL2)"
         Me.col_rndFL2.Name = "col_rndFL2"
         Me.col_rndFL2.ReadOnly = True
+        Me.col_rndFL2.Width = 50
         '
         'col_tlavadoFL2
         '
         Me.col_tlavadoFL2.HeaderText = "T. Lavado"
         Me.col_tlavadoFL2.Name = "col_tlavadoFL2"
         Me.col_tlavadoFL2.ReadOnly = True
+        Me.col_tlavadoFL2.Width = 70
         '
         'col_hflavadoFL2
         '
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.LightSkyBlue
+        Me.col_hflavadoFL2.DefaultCellStyle = DataGridViewCellStyle5
         Me.col_hflavadoFL2.HeaderText = "H. Fin Lavado"
         Me.col_hflavadoFL2.Name = "col_hflavadoFL2"
         Me.col_hflavadoFL2.ReadOnly = True
+        Me.col_hflavadoFL2.Width = 70
         '
         'col_kFS1
         '
         Me.col_kFS1.HeaderText = "K (FS1)"
         Me.col_kFS1.Name = "col_kFS1"
         Me.col_kFS1.ReadOnly = True
+        Me.col_kFS1.Width = 50
         '
         'col_tsecadoFS1
         '
         Me.col_tsecadoFS1.HeaderText = "T. Secado"
         Me.col_tsecadoFS1.Name = "col_tsecadoFS1"
         Me.col_tsecadoFS1.ReadOnly = True
+        Me.col_tsecadoFS1.Width = 70
         '
         'col_hfsecadoFS1
         '
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.LightSkyBlue
+        Me.col_hfsecadoFS1.DefaultCellStyle = DataGridViewCellStyle6
         Me.col_hfsecadoFS1.HeaderText = "H. Fin Secado"
         Me.col_hfsecadoFS1.Name = "col_hfsecadoFS1"
         Me.col_hfsecadoFS1.ReadOnly = True
+        Me.col_hfsecadoFS1.Width = 70
         '
         'col_kFS2
         '
         Me.col_kFS2.HeaderText = "K (FS2)"
         Me.col_kFS2.Name = "col_kFS2"
         Me.col_kFS2.ReadOnly = True
+        Me.col_kFS2.Width = 50
         '
         'col_tsecadoFS2
         '
         Me.col_tsecadoFS2.HeaderText = "T. Secado"
         Me.col_tsecadoFS2.Name = "col_tsecadoFS2"
         Me.col_tsecadoFS2.ReadOnly = True
+        Me.col_tsecadoFS2.Width = 70
         '
         'col_hfsecadoFS2
         '
+        DataGridViewCellStyle7.BackColor = System.Drawing.Color.LightSkyBlue
+        Me.col_hfsecadoFS2.DefaultCellStyle = DataGridViewCellStyle7
         Me.col_hfsecadoFS2.HeaderText = "H. Fin Secado"
         Me.col_hfsecadoFS2.Name = "col_hfsecadoFS2"
         Me.col_hfsecadoFS2.ReadOnly = True
+        Me.col_hfsecadoFS2.Width = 70
         '
         'col_tiempoPA
         '
         Me.col_tiempoPA.HeaderText = "T. (PA)"
         Me.col_tiempoPA.Name = "col_tiempoPA"
         Me.col_tiempoPA.ReadOnly = True
+        Me.col_tiempoPA.Width = 50
         '
         'col_hfPA
         '
+        DataGridViewCellStyle8.BackColor = System.Drawing.Color.LightSkyBlue
+        Me.col_hfPA.DefaultCellStyle = DataGridViewCellStyle8
         Me.col_hfPA.HeaderText = "H. Fin PA"
         Me.col_hfPA.Name = "col_hfPA"
         Me.col_hfPA.ReadOnly = True
+        Me.col_hfPA.Width = 70
         '
         'col_estadoEQA
         '
         Me.col_estadoEQA.HeaderText = "Estado (QA)"
         Me.col_estadoEQA.Name = "col_estadoEQA"
         Me.col_estadoEQA.ReadOnly = True
+        Me.col_estadoEQA.Width = 50
         '
         'col_colaEQA
         '
         Me.col_colaEQA.HeaderText = "Cola (QA)"
         Me.col_colaEQA.Name = "col_colaEQA"
         Me.col_colaEQA.ReadOnly = True
+        Me.col_colaEQA.Width = 50
         '
         'col_AA
         '
         Me.col_AA.HeaderText = "Estado (AA)"
         Me.col_AA.Name = "col_AA"
         Me.col_AA.ReadOnly = True
+        Me.col_AA.Width = 50
         '
         'col_colaAA
         '
         Me.col_colaAA.HeaderText = "Cola (AA)"
         Me.col_colaAA.Name = "col_colaAA"
         Me.col_colaAA.ReadOnly = True
+        Me.col_colaAA.Width = 50
         '
         'col_estadoEL1
         '
         Me.col_estadoEL1.HeaderText = "Estado (EL1)"
         Me.col_estadoEL1.Name = "col_estadoEL1"
         Me.col_estadoEL1.ReadOnly = True
+        Me.col_estadoEL1.Width = 50
         '
         'col_estadoEL2
         '
         Me.col_estadoEL2.HeaderText = "Estado (EL2)"
         Me.col_estadoEL2.Name = "col_estadoEL2"
         Me.col_estadoEL2.ReadOnly = True
+        Me.col_estadoEL2.Width = 50
         '
         'col_colaEL
         '
         Me.col_colaEL.HeaderText = "Cola (EL)"
         Me.col_colaEL.Name = "col_colaEL"
         Me.col_colaEL.ReadOnly = True
+        Me.col_colaEL.Width = 50
         '
         'col_etadosecadora
         '
         Me.col_etadosecadora.HeaderText = "Estado (S)"
         Me.col_etadosecadora.Name = "col_etadosecadora"
         Me.col_etadosecadora.ReadOnly = True
+        Me.col_etadosecadora.Width = 50
         '
         'col_estadoEPA
         '
         Me.col_estadoEPA.HeaderText = "Estado (PA)"
         Me.col_estadoEPA.Name = "col_estadoEPA"
         Me.col_estadoEPA.ReadOnly = True
+        Me.col_estadoEPA.Width = 50
         '
         'col_colaPA
         '
         Me.col_colaPA.HeaderText = "Cola (PA)"
         Me.col_colaPA.Name = "col_colaPA"
         Me.col_colaPA.ReadOnly = True
+        Me.col_colaPA.Width = 50
         '
         'frm_desarrollo
         '
