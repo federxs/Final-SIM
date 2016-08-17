@@ -68,7 +68,7 @@
         'Cambiamos tamaños de columnas
         Show()
         Try
-            Do While (reloj < 200)
+            Do While (reloj < 50)
 
                 If (reloj = 0) Then 'primera iteracion
                     evento = "Inicio"
@@ -206,51 +206,49 @@
 
                 If (reloj = finLavado1_horaFin) Then
                     evento = "Fin Lavado 1"
-                    Dim carroceriaLavada = espacioLavado1_carroceria
-                    carroceriaLavada.humedad = 100.0R
+                    espacioLavado1_carroceria.humedad = 100.0R
                     finLavado1_horaFin = -1
                     finLavado1_RND = -1
                     finLavado1_tiempoLavado = -1
                     Dim numK As Double
-                    If (carroceriaLavada.auto.tipo = "Pequeño") Then
+                    If (espacioLavado1_carroceria.auto.tipo = "Pequeño") Then
                         numK = 0.75R
-                    ElseIf (carroceriaLavada.auto.tipo = "Mediano") Then
+                    ElseIf (espacioLavado1_carroceria.auto.tipo = "Mediano") Then
                         numK = 0.5R
-                    ElseIf (carroceriaLavada.auto.tipo = "PickUp") Then
+                    ElseIf (espacioLavado1_carroceria.auto.tipo = "PickUp") Then
                         numK = 0.25R
                     End If
                     If (secadora_estado = "L") Then
-                        carroceriaLavada.estado = "Secando Maq"
+                        espacioLavado1_carroceria.estado = "Secando Maq"
                         secadora_estado = "Secando 1"
-                        determinarFinSecadoMaquina1(carroceriaLavada.humedad, numK)
+                        determinarFinSecadoMaquina1(espacioLavado1_carroceria.humedad, numK)
                     ElseIf (secadora_estado = "Secando 2") Then
-                        carroceriaLavada.estado = "Secando Sola"
-                        determinarFinSecadoSolo1(carroceriaLavada.humedad, numK)
+                        espacioLavado1_carroceria.estado = "Secando Sola"
+                        determinarFinSecadoSolo1(espacioLavado1_carroceria.humedad, numK)
                     End If
                 End If
 
                 If (reloj = finLavado2_horaFin) Then
                     evento = "Fin Lavado 2"
-                    Dim carroceriaLavada = espacioLavado2_carroceria
-                    carroceriaLavada.humedad = 100.0R
+                    espacioLavado2_carroceria.humedad = 100.0R
                     Dim numK As Double
                     finLavado2_horaFin = -1
                     finLavado2_RND = -1
                     finLavado2_tiempoLavado = -1
-                    If (carroceriaLavada.auto.tipo = "Pequeño") Then
+                    If (espacioLavado2_carroceria.auto.tipo = "Pequeño") Then
                         numK = 0.75R
-                    ElseIf (carroceriaLavada.auto.tipo = "Mediano") Then
+                    ElseIf (espacioLavado2_carroceria.auto.tipo = "Mediano") Then
                         numK = 0.5R
-                    ElseIf (carroceriaLavada.auto.tipo = "PickUp") Then
+                    ElseIf (espacioLavado2_carroceria.auto.tipo = "PickUp") Then
                         numK = 0.25R
                     End If
                     If (secadora_estado = "L") Then
-                        carroceriaLavada.estado = "Secando Maq"
+                        espacioLavado2_carroceria.estado = "Secando Maq"
                         secadora_estado = "Secando 2"
-                        determinarFinSecadoMaquina2(carroceriaLavada.humedad, carroceriaLavada.auto.numK)
+                        determinarFinSecadoMaquina2(espacioLavado2_carroceria.humedad, numK)
                     ElseIf (secadora_estado = "Secando 1") Then
-                        carroceriaLavada.estado = "Secando Sola"
-                        determinarFinSecadoSolo2(carroceriaLavada.humedad, carroceriaLavada.auto.numK)
+                        espacioLavado2_carroceria.estado = "Secando Sola"
+                        determinarFinSecadoSolo2(espacioLavado2_carroceria.humedad, numK)
                     End If
                 End If
 
@@ -286,18 +284,18 @@
                                 empPA_cola += 1
                                 empPA_colaLista.Add(alfombra.auto) 'tmb puede ser espaciolavado1_carroceria.auto ya que apuntan al mismo
                                 alfombra.estado = "Esperando PA"
-                                espacioLavado2_carroceria.estado = "Esperando PA"
+                                espacioLavado1_carroceria.estado = "Esperando PA"
                             End If
                         ElseIf (alfombra.auto.num = espacioLavado1_carroceria.auto.num And alfombra.estado <> "Esperando Carroceria") Then
-                            espacioLavado2_carroceria.estado = "Esperando Alfombra"
+                            espacioLavado1_carroceria.estado = "Esperando Alfombra"
                         End If
                     Next
                     If (espaciosLavadoSecado_cola = 0) Then
                         espacioLavado1_carroceria = Nothing
                         espacioLavado1_estado = "L"
-                        finLavado1_RND() = -1.0R
-                        finLavado1_tiempoLavado() = -1.0R
-                        finLavado1_horaFin = -1.0R
+                        finSecado1_numK = -1.0R
+                        finSecado1_tiempoSecado = -1.0R
+                        finSecado1_horaFin = -1.0R
                     ElseIf (espaciosLavadoSecado_cola > 0) Then
                         espacioLavado1_carroceria = espaciosLavadoSecado_colaLista.First
                         espaciosLavadoSecado_colaLista.Remove(espaciosLavadoSecado_colaLista.First)
@@ -348,9 +346,9 @@
                     If (espaciosLavadoSecado_cola = 0) Then 'SI NO HAY COLA EN LOS ESPACIOS DE LAVADO
                         espacioLavado2_carroceria = Nothing
                         espacioLavado2_estado = "L"
-                        finLavado2_RND() = -1.0R
-                        finLavado2_tiempoLavado() = -1.0R
-                        finLavado2_horaFin = -1.0R
+                        finSecado2_numK = -1.0R
+                        finSecado2_tiempoSecado = -1.0R
+                        finSecado2_horaFin = -1.0R
                     ElseIf (espaciosLavadoSecado_cola > 0) Then 'SI HAY COLA EN LOS ESPACIOS DE LAVADO
                         espacioLavado2_carroceria = espaciosLavadoSecado_colaLista.First
                         espaciosLavadoSecado_colaLista.Remove(espaciosLavadoSecado_colaLista.First)
@@ -547,18 +545,18 @@
     Private Sub determinarFinAA()
         finAspirado_RND = Math.Round(random.NextDouble(), 2)
         finAspirado_tiempoAspirado = finAspirado_RND * 2 + 3
-        finAspirado_horaFin = reloj + finAspirado_tiempoAspirado
+        finAspirado_horaFin = Math.Round(reloj + finAspirado_tiempoAspirado, 2)
     End Sub
 
     Private Sub determinarFinLavado1()
         finLavado1_RND = Math.Round(random.NextDouble(), 2)
-        finLavado1_tiempoLavado = Math.Round(finLavado1_RND * 6 + 6, 2)
+        finLavado1_tiempoLavado = finLavado1_RND * 6 + 6
         finLavado1_horaFin = Math.Round(reloj + finLavado1_tiempoLavado, 2)
     End Sub
 
     Private Sub determinarFinLavado2()
         finLavado2_RND = Math.Round(random.NextDouble(), 2)
-        finLavado2_tiempoLavado = Math.Round(finLavado2_RND * 6 + 6, 2)
+        finLavado2_tiempoLavado = finLavado2_RND * 6 + 6
         finLavado2_horaFin = Math.Round(reloj + finLavado2_tiempoLavado, 2)
     End Sub
 
@@ -570,7 +568,7 @@
 
     Private Sub determinarFinQA()
         finQuitarAlfombra_tiempo = 2.0R
-        finQuitarAlfombra_horaFin = reloj + finQuitarAlfombra_tiempo
+        finQuitarAlfombra_horaFin = Math.Round(reloj + finQuitarAlfombra_tiempo, 2)
     End Sub
 
     Private Sub determinarTipoAuto(auto As Automovil)
