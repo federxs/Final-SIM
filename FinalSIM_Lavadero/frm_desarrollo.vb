@@ -208,18 +208,6 @@
                 evento = "Fin Lavado 1"
                 Dim carroceriaLavada = espacioLavado1_carroceria
                 carroceriaLavada.humedad = 100.0R
-                If (espaciosLavadoSecado_cola = 0) Then
-                    espacioLavado1_carroceria = Nothing
-                    finLavado1_horaFin = -1.0R
-                    finLavado1_RND = -1.0R
-                    finLavado1_tiempoLavado = -1.0R
-                ElseIf (espaciosLavadoSecado_cola > 0) Then
-                    espaciosLavadoSecado_cola -= 1
-                    espacioLavado1_carroceria = espaciosLavadoSecado_colaLista.First
-                    espaciosLavadoSecado_colaLista.Remove(espaciosLavadoSecado_colaLista.First)
-                    determinarFinLavado1()
-                End If
-
                 Dim numK As Double
                 If (carroceriaLavada.auto.tipo = "Pequeño") Then
                     numK = 0.75R
@@ -242,18 +230,14 @@
                 evento = "Fin Lavado 2"
                 Dim carroceriaLavada = espacioLavado2_carroceria
                 carroceriaLavada.humedad = 100.0R
-                If (espaciosLavadoSecado_cola = 0) Then
-                    espacioLavado2_carroceria = Nothing
-                    finLavado2_horaFin = -1.0R
-                    finLavado2_RND = -1.0R
-                    finLavado2_tiempoLavado = -1.0R
-                ElseIf (espaciosLavadoSecado_cola > 0) Then
-                    espaciosLavadoSecado_cola -= 1
-                    espacioLavado2_carroceria = espaciosLavadoSecado_colaLista.First
-                    espaciosLavadoSecado_colaLista.Remove(espaciosLavadoSecado_colaLista.First)
-                    determinarFinLavado2()
+                Dim numK As Double
+                If (carroceriaLavada.auto.tipo = "Pequeño") Then
+                    numK = 0.75R
+                ElseIf (carroceriaLavada.auto.tipo = "Mediano") Then
+                    numK = 0.5R
+                ElseIf (carroceriaLavada.auto.tipo = "PickUp") Then
+                    numK = 0.25R
                 End If
-
                 If (secadora_estado = "L") Then
                     carroceriaLavada.estado = "Secando Maq"
                     secadora_estado = "Secando 2"
@@ -267,7 +251,7 @@
             If (reloj = finSecado1_horaFin) Then
                 evento = "Fin Secado 1"
                 espacioLavado1_carroceria.humedad = 0.0R
-                If (espacioLavado1_carroceria.estado = "Secando Maq" And espacioLavado2_carroceria.estado = "Secando Sola") Then 'La carroceria en el espacio 1 tiene la secadora y hay una carroceria en el otro EL secandose sola
+                If (espacioLavado1_carroceria.estado = "Secando Maq" And espacioLavado2_estado And espacioLavado2_carroceria.estado = "Secando Sola") Then 'La carroceria en el espacio 1 tiene la secadora y hay una carroceria en el otro EL secandose sola
                     secadora_estado = "Secando 2"
                     espacioLavado2_carroceria.estado = "Secando Maq"
                     Dim tiempoSecadoAnterior As Double
@@ -320,7 +304,7 @@
             If (reloj = finSecado2_horaFin) Then
                 evento = "Fin Secado 2"
                 espacioLavado2_carroceria.humedad = 0.0R
-                If (espacioLavado2_carroceria.estado = "Secando Maq" And espacioLavado1_carroceria.estado = "Secando Sola") Then 'La carroceria en el espacio 2 tiene la secadora y hay una carroceria en el otro EL secandose sola
+                If (espacioLavado2_carroceria.estado = "Secando Maq" And espacioLavado1_estado = "O" And espacioLavado1_carroceria.estado = "Secando Sola") Then 'La carroceria en el espacio 2 tiene la secadora y hay una carroceria en el otro EL secandose sola
                     secadora_estado = "Secando 1"
                     espacioLavado1_carroceria.estado = "Secando Maq"
                     Dim tiempoSecadoAnterior As Double
