@@ -47,9 +47,9 @@
     Dim areaAspirado_listaCola As New List(Of Alfombra)
 
     Dim espacioLavado1_estado = "L"
-    Dim espacioLavado1_carroceria As Carroceria
+    Dim espacioLavado1_carroceria As New Carroceria
     Dim espacioLavado2_estado = "L"
-    Dim espacioLavado2_carroceria As Carroceria
+    Dim espacioLavado2_carroceria As New Carroceria
     Dim espaciosLavadoSecado_cola = 0.0R
     Dim espaciosLavadoSecado_colaLista As New List(Of Carroceria)
 
@@ -67,367 +67,378 @@
         'Me.WindowState = FormWindowState.Maximized
         'Cambiamos tamaños de columnas
         Show()
+        Try
+            Do While (reloj < 200)
 
-        Do While (reloj < 200)
-
-            If (reloj = 0) Then 'primera iteracion
-                evento = "Inicio"
-                determinarLlegadaAuto()
-            End If
-
-            If (reloj = llegadaAuto_horaLlegada) Then
-                contadorAutos += 1
-                evento = "Llegada Auto"
-                'crear un auto
-                Dim autoNuevo As New Automovil()
-                determinarTipoAuto(autoNuevo)
-                autoNuevo.num = contadorAutos
-                listaAutos.Add(autoNuevo)
-                If (empQA_estado = "L") Then
-                    empQA_estado = "O"
-                    empQA_colaLista.Add(autoNuevo)
-                    autoNuevo.estado = "Siendo QA"
-                    determinarFinQA()
-                ElseIf (empQA_estado = "O") Then
-                    empQA_colaLista.Add(autoNuevo)
-                    empQA_cola += 1
-                    autoNuevo.estado = "Esperando QA"
+                If (reloj = 0) Then 'primera iteracion
+                    evento = "Inicio"
+                    determinarLlegadaAuto()
                 End If
 
-                'otra llegada
-                determinarLlegadaAuto()
-            End If
-
-            If (reloj = finQuitarAlfombra_horaFin) Then
-                evento = "Fin QA"
-                tipoAuto_RND = -1
-                tipoAuto_tipo = -1
-                llegadaAuto_RND = -1
-                llegadaAuto_tiempoEntreLlegadas = -1
-                Dim autoDesarmado = empQA_colaLista.First
-                If (empQA_cola = 0) Then
-                    empQA_estado = "L"
-                    empQA_colaLista.Remove(empQA_colaLista.First())
-                    finQuitarAlfombra_horaFin = -1.0R
-                    finQuitarAlfombra_tiempo = -1.0R
-                ElseIf (empQA_cola > 0) Then
-                    empQA_colaLista.Remove(empQA_colaLista.First())
-                    empQA_cola -= 1
-                    determinarFinQA()
-                    empQA_colaLista.First.estado = "Siendo QA"
-                End If
-                autoDesarmado.estado = "Desarmado"
-
-                'creamos una alfombra a partir de este auto
-                Dim alfombraNueva As New Alfombra()
-                alfombraNueva.auto = autoDesarmado
-                listaAlfombras.Add(alfombraNueva)
-                If (areaAspirado_estado = "L") Then
-                    areaAspirado_estado = "O"
-                    alfombraNueva.estado = "Siendo AA"
-                    areaAspirado_listaCola.Add(alfombraNueva)
-                    determinarFinAA()
-                ElseIf (areaAspirado_estado = "O") Then
-                    areaAspirado_cola += 1
-                    alfombraNueva.estado = "Esperando AA"
-                    areaAspirado_listaCola.Add(alfombraNueva)
-                End If
-
-
-                'creamos una carroceria a partir de este auto
-                Dim carroceriaNueva As New Carroceria()
-                carroceriaNueva.auto = autoDesarmado
-                listaCarrocerias.Add(carroceriaNueva)
-                If (espacioLavado1_estado = "L" And espacioLavado2_estado = "L") Then 'Ambos EL libres, ocupamos uno aleatoriamente
-                    Dim numRandom = Math.Round(random.NextDouble(), 2)
-                    If (numRandom <= 0.49) Then 'EL1 libre
-                        espacioLavado1_estado = "O"
-                        espacioLavado1_carroceria = carroceriaNueva
-                        carroceriaNueva.estado = "Siendo L"
-                        determinarFinLavado1()
-                    ElseIf (numRandom >= 0.5) Then 'EL2 libre
-                        espacioLavado2_estado = "O"
-                        espacioLavado2_carroceria = carroceriaNueva
-                        carroceriaNueva.estado = "Siendo L"
-                        determinarFinLavado2()
+                If (reloj = llegadaAuto_horaLlegada) Then
+                    contadorAutos += 1
+                    evento = "Llegada Auto"
+                    'crear un auto
+                    Dim autoNuevo As New Automovil()
+                    determinarTipoAuto(autoNuevo)
+                    autoNuevo.num = contadorAutos
+                    listaAutos.Add(autoNuevo)
+                    If (empQA_estado = "L") Then
+                        empQA_estado = "O"
+                        empQA_colaLista.Add(autoNuevo)
+                        autoNuevo.estado = "Siendo QA"
+                        determinarFinQA()
+                    ElseIf (empQA_estado = "O") Then
+                        empQA_colaLista.Add(autoNuevo)
+                        empQA_cola += 1
+                        autoNuevo.estado = "Esperando QA"
                     End If
-                ElseIf (espacioLavado1_estado = "L" Or espacioLavado2_estado = "L") Then 'Alguno de los dos EL libres
-                    If (espacioLavado1_estado = "L") Then 'EL1 libre
-                        espacioLavado1_estado = "O"
-                        espacioLavado1_carroceria = carroceriaNueva
-                        carroceriaNueva.estado = "Siendo L"
-                        determinarFinLavado1()
-                    ElseIf (espacioLavado2_estado = "L") Then 'EL2 libre
-                        espacioLavado2_estado = "O"
-                        espacioLavado2_carroceria = carroceriaNueva
-                        carroceriaNueva.estado = "Siendo L"
-                        determinarFinLavado2()
-                    End If
-                ElseIf (espacioLavado1_estado = "O" And espacioLavado2_estado = "O") Then 'Ambos EL ocupados, agregamos a la cola
-                    espaciosLavadoSecado_cola += 1
-                    espaciosLavadoSecado_colaLista.Add(carroceriaNueva)
-                    carroceriaNueva.estado = "Esperando L"
-                End If
-            End If
 
-            If (reloj = finAspirado_horaFin) Then
-                evento = "Fin AA"
-                'Vamos a determinar si la carroceria del auto ya esta seca (esperando alfombra) o no
-                For Each carroceria As Carroceria In listaCarrocerias
-                    If (carroceria.auto.num = areaAspirado_listaCola.First.auto.num And carroceria.estado = "Esperando Alfombra") Then
-                        If (empPA_cola = 0) Then
-                            empPA_estado = "O"
-                            empPA_colaLista.Add(carroceria.auto)
-                            carroceria.estado = "Siendo PA"
-                            areaAspirado_listaCola.First.estado = "Siendo PA"
-                            determinarFinPA()
-                        ElseIf (empPA_cola > 0) Then
-                            empPA_cola += 1
-                            empPA_colaLista.Add(carroceria.auto) 'tmb puede ser areaaspirado_listacola.first.auto ya que apuntan al mismo
-                            carroceria.estado = "Esperando PA"
-                            areaAspirado_listaCola.First.estado = "Esperando PA"
+                    'otra llegada
+                    determinarLlegadaAuto()
+                End If
+
+                If (reloj = finQuitarAlfombra_horaFin) Then
+                    evento = "Fin QA"
+                    tipoAuto_RND = -1
+                    tipoAuto_tipo = -1
+                    llegadaAuto_RND = -1
+                    llegadaAuto_tiempoEntreLlegadas = -1
+                    Dim autoDesarmado = empQA_colaLista.First
+                    If (empQA_cola = 0) Then
+                        empQA_estado = "L"
+                        empQA_colaLista.Remove(empQA_colaLista.First())
+                        finQuitarAlfombra_horaFin = -1.0R
+                        finQuitarAlfombra_tiempo = -1.0R
+                    ElseIf (empQA_cola > 0) Then
+                        empQA_colaLista.Remove(empQA_colaLista.First())
+                        empQA_cola -= 1
+                        determinarFinQA()
+                        empQA_colaLista.First.estado = "Siendo QA"
+                    End If
+                    autoDesarmado.estado = "Desarmado"
+
+                    'creamos una alfombra a partir de este auto
+                    Dim alfombraNueva As New Alfombra()
+                    alfombraNueva.auto = autoDesarmado
+                    listaAlfombras.Add(alfombraNueva)
+                    If (areaAspirado_estado = "L") Then
+                        areaAspirado_estado = "O"
+                        alfombraNueva.estado = "Siendo AA"
+                        areaAspirado_listaCola.Add(alfombraNueva)
+                        determinarFinAA()
+                    ElseIf (areaAspirado_estado = "O") Then
+                        areaAspirado_cola += 1
+                        alfombraNueva.estado = "Esperando AA"
+                        areaAspirado_listaCola.Add(alfombraNueva)
+                    End If
+
+
+                    'creamos una carroceria a partir de este auto
+                    Dim carroceriaNueva As New Carroceria()
+                    carroceriaNueva.auto = autoDesarmado
+                    listaCarrocerias.Add(carroceriaNueva)
+                    If (espacioLavado1_estado = "L" And espacioLavado2_estado = "L") Then 'Ambos EL libres, ocupamos uno aleatoriamente
+                        Dim numRandom = Math.Round(random.NextDouble(), 2)
+                        If (numRandom <= 0.49) Then 'EL1 libre
+                            espacioLavado1_estado = "O"
+                            espacioLavado1_carroceria = carroceriaNueva
+                            carroceriaNueva.estado = "Siendo L"
+                            determinarFinLavado1()
+                        ElseIf (numRandom >= 0.5) Then 'EL2 libre
+                            espacioLavado2_estado = "O"
+                            espacioLavado2_carroceria = carroceriaNueva
+                            carroceriaNueva.estado = "Siendo L"
+                            determinarFinLavado2()
                         End If
-                    ElseIf (carroceria.auto.num = areaAspirado_listaCola.First.auto.num And carroceria.estado <> "Esperando Alfombra") Then
-                        areaAspirado_listaCola.First.estado = "Esperando Carroceria"
-                    End If
-                Next
-                If (areaAspirado_cola = 0) Then
-                    areaAspirado_estado = "L"
-                    areaAspirado_listaCola.Remove(areaAspirado_listaCola.First)
-                    finAspirado_horaFin = -1.0R
-                    finAspirado_RND = -1.0R
-                    finAspirado_tiempoAspirado = -1.0R
-                ElseIf (areaAspirado_cola > 0) Then
-                    areaAspirado_cola -= 1
-                    areaAspirado_listaCola.Remove(areaAspirado_listaCola.First)
-                    determinarFinAA()
-                End If
-            End If
-
-            If (reloj = finLavado1_horaFin) Then
-                evento = "Fin Lavado 1"
-                Dim carroceriaLavada = espacioLavado1_carroceria
-                carroceriaLavada.humedad = 100.0R
-                Dim numK As Double
-                If (carroceriaLavada.auto.tipo = "Pequeño") Then
-                    numK = 0.75R
-                ElseIf (carroceriaLavada.auto.tipo = "Mediano") Then
-                    numK = 0.5R
-                ElseIf (carroceriaLavada.auto.tipo = "PickUp") Then
-                    numK = 0.25R
-                End If
-                If (secadora_estado = "L") Then
-                    carroceriaLavada.estado = "Secando Maq"
-                    secadora_estado = "Secando 1"
-                    determinarFinSecadoMaquina1(carroceriaLavada.humedad, numK)
-                ElseIf (secadora_estado = "Secando 2") Then
-                    carroceriaLavada.estado = "Secando Sola"
-                    determinarFinSecadoSolo1(carroceriaLavada.humedad, numK)
-                End If
-            End If
-
-            If (reloj = finLavado2_horaFin) Then
-                evento = "Fin Lavado 2"
-                Dim carroceriaLavada = espacioLavado2_carroceria
-                carroceriaLavada.humedad = 100.0R
-                Dim numK As Double
-                If (carroceriaLavada.auto.tipo = "Pequeño") Then
-                    numK = 0.75R
-                ElseIf (carroceriaLavada.auto.tipo = "Mediano") Then
-                    numK = 0.5R
-                ElseIf (carroceriaLavada.auto.tipo = "PickUp") Then
-                    numK = 0.25R
-                End If
-                If (secadora_estado = "L") Then
-                    carroceriaLavada.estado = "Secando Maq"
-                    secadora_estado = "Secando 2"
-                    determinarFinSecadoMaquina2(carroceriaLavada.humedad, carroceriaLavada.auto.numK)
-                ElseIf (secadora_estado = "Secando 1") Then
-                    carroceriaLavada.estado = "Secando Sola"
-                    determinarFinSecadoSolo2(carroceriaLavada.humedad, carroceriaLavada.auto.numK)
-                End If
-            End If
-
-            If (reloj = finSecado1_horaFin) Then
-                evento = "Fin Secado 1"
-                espacioLavado1_carroceria.humedad = 0.0R
-                If (espacioLavado1_carroceria.estado = "Secando Maq" And espacioLavado2_estado And espacioLavado2_carroceria.estado = "Secando Sola") Then 'La carroceria en el espacio 1 tiene la secadora y hay una carroceria en el otro EL secandose sola
-                    secadora_estado = "Secando 2"
-                    espacioLavado2_carroceria.estado = "Secando Maq"
-                    Dim tiempoSecadoAnterior As Double
-                    Dim horaFinSecadoAnterior As Double
-                    Dim tiempoAnterior As Double
-                    Dim tiempoTranscurrido As Double
-                    With dgv_matriz
-                        tiempoSecadoAnterior = .Rows(.RowCount - 1).Cells(22).Value
-                        horaFinSecadoAnterior = .Rows(.RowCount - 1).Cells(23).Value
-                    End With
-                    tiempoAnterior = horaFinSecadoAnterior - tiempoSecadoAnterior
-                    tiempoTranscurrido = reloj - tiempoAnterior
-                    Dim humedadActual = determinarHumedadActual(espacioLavado2_carroceria.auto.numK, tiempoTranscurrido)
-                    determinarFinSecadoMaquina2(humedadActual, espacioLavado2_carroceria.auto.numK)
-                End If
-                'Vamos a determinar si la alfombra del auto ya se aspiró (esperando carroceria) o no
-                For Each alfombra As Alfombra In listaAlfombras
-                    If (alfombra.auto.num = espacioLavado1_carroceria.auto.num And alfombra.estado = "Esperando Carroceria") Then
-                        If (empPA_cola = 0) Then
-                            empPA_estado = "O"
-                            empPA_colaLista.Add(alfombra.auto)
-                            alfombra.estado = "Siendo PA"
-                            espacioLavado1_carroceria.estado = "Siendo PA"
-                            determinarFinPA()
-                        ElseIf (empPA_cola > 0) Then
-                            empPA_cola += 1
-                            empPA_colaLista.Add(alfombra.auto) 'tmb puede ser espaciolavado1_carroceria.auto ya que apuntan al mismo
-                            alfombra.estado = "Esperando PA"
-                            espacioLavado2_carroceria.estado = "Esperando PA"
+                    ElseIf (espacioLavado1_estado = "L" Or espacioLavado2_estado = "L") Then 'Alguno de los dos EL libres
+                        If (espacioLavado1_estado = "L") Then 'EL1 libre
+                            espacioLavado1_estado = "O"
+                            espacioLavado1_carroceria = carroceriaNueva
+                            carroceriaNueva.estado = "Siendo L"
+                            determinarFinLavado1()
+                        ElseIf (espacioLavado2_estado = "L") Then 'EL2 libre
+                            espacioLavado2_estado = "O"
+                            espacioLavado2_carroceria = carroceriaNueva
+                            carroceriaNueva.estado = "Siendo L"
+                            determinarFinLavado2()
                         End If
-                    ElseIf (alfombra.auto.num = espacioLavado1_carroceria.auto.num And alfombra.estado <> "Esperando Carroceria") Then
-                        espacioLavado2_carroceria.estado = "Esperando Alfombra"
+                    ElseIf (espacioLavado1_estado = "O" And espacioLavado2_estado = "O") Then 'Ambos EL ocupados, agregamos a la cola
+                        espaciosLavadoSecado_cola += 1
+                        espaciosLavadoSecado_colaLista.Add(carroceriaNueva)
+                        carroceriaNueva.estado = "Esperando L"
                     End If
-                Next
-                If (espaciosLavadoSecado_cola = 0) Then
-                    espacioLavado1_carroceria = Nothing
-                    espacioLavado1_estado = "L"
-                    finLavado1_RND() = -1.0R
-                    finLavado1_tiempoLavado() = -1.0R
-                    finLavado1_horaFin = -1.0R
-                ElseIf (espaciosLavadoSecado_cola > 0) Then
-                    espacioLavado1_carroceria = espaciosLavadoSecado_colaLista.First
-                    espaciosLavadoSecado_colaLista.Remove(espaciosLavadoSecado_colaLista.First)
-                    espaciosLavadoSecado_cola -= 1
-                    espacioLavado1_carroceria.estado = "Siendo L"
-                    determinarFinLavado1()
-                End If
-            End If
-
-            If (reloj = finSecado2_horaFin) Then
-                evento = "Fin Secado 2"
-                espacioLavado2_carroceria.humedad = 0.0R
-                If (espacioLavado2_carroceria.estado = "Secando Maq" And espacioLavado1_estado = "O" And espacioLavado1_carroceria.estado = "Secando Sola") Then 'La carroceria en el espacio 2 tiene la secadora y hay una carroceria en el otro EL secandose sola
-                    secadora_estado = "Secando 1"
-                    espacioLavado1_carroceria.estado = "Secando Maq"
-                    Dim tiempoSecadoAnterior As Double
-                    Dim horaFinSecadoAnterior As Double
-                    Dim tiempoAnterior As Double
-                    Dim tiempoTranscurrido As Double
-                    With dgv_matriz
-                        tiempoSecadoAnterior = .Rows(.RowCount - 1).Cells(19).Value
-                        horaFinSecadoAnterior = .Rows(.RowCount - 1).Cells(20).Value
-                    End With
-                    tiempoAnterior = horaFinSecadoAnterior - tiempoSecadoAnterior
-                    tiempoTranscurrido = reloj - tiempoAnterior
-                    Dim humedadActual = determinarHumedadActual(espacioLavado1_carroceria.auto.numK, tiempoTranscurrido)
-                    determinarFinSecadoMaquina1(humedadActual, espacioLavado1_carroceria.auto.numK)
-                End If
-                'Vamos a determinar si la alfombra del auto ya se aspiró (esperando carroceria) o no
-                For Each alfombra As Alfombra In listaAlfombras
-                    If (alfombra.auto.num = espacioLavado2_carroceria.auto.num And alfombra.estado = "Esperando Carroceria") Then
-                        If (empPA_cola = 0) Then
-                            empPA_estado = "O"
-                            empPA_colaLista.Add(alfombra.auto)
-                            alfombra.estado = "Siendo PA"
-                            espacioLavado2_carroceria.estado = "Siendo PA"
-                            determinarFinPA()
-                        ElseIf (empPA_cola > 0) Then
-                            empPA_cola += 1
-                            empPA_colaLista.Add(alfombra.auto) 'tmb puede ser espaciolavado2_carroceria.auto ya que apuntan al mismo
-                            alfombra.estado = "Esperando PA"
-                            espacioLavado2_carroceria.estado = "Esperando PA"
-                        End If
-                    ElseIf (alfombra.auto.num = espacioLavado2_carroceria.auto.num And alfombra.estado <> "Esperando Carroceria") Then
-                        espacioLavado2_carroceria.estado = "Esperando Alfombra"
-                    End If
-                Next
-                If (espaciosLavadoSecado_cola = 0) Then 'SI NO HAY COLA EN LOS ESPACIOS DE LAVADO
-                    espacioLavado2_carroceria = Nothing
-                    espacioLavado2_estado = "L"
-                    finLavado2_RND() = -1.0R
-                    finLavado2_tiempoLavado() = -1.0R
-                    finLavado2_horaFin = -1.0R
-                ElseIf (espaciosLavadoSecado_cola > 0) Then 'SI HAY COLA EN LOS ESPACIOS DE LAVADO
-                    espacioLavado2_carroceria = espaciosLavadoSecado_colaLista.First
-                    espaciosLavadoSecado_colaLista.Remove(espaciosLavadoSecado_colaLista.First)
-                    espaciosLavadoSecado_cola -= 1
-                    espacioLavado2_carroceria.estado = "Siendo L"
-                    determinarFinLavado2()
                 End If
 
-            End If
-
-            If (reloj = finPonerAlfombra_horaFin) Then
-                evento = "Fin PA"
-                'Eliminamos el auto, la alfombra y la carroceria del sistema
-                If (empPA_cola = 0) Then
-                    empPA_colaLista.First.estado = "/////"
-                    empPA_colaLista.First.tipo = "/////"
-                    'listaAutos.Remove(empPA_colaLista.First)
-                    For Each alfombra As Alfombra In listaAlfombras
-                        If (alfombra.auto.num = empPA_colaLista.First.num) Then
-                            alfombra.estado = "/////"
-                            'listaAlfombras.Remove(alfombra)
-                        End If
-                    Next
+                If (reloj = finAspirado_horaFin) Then
+                    evento = "Fin AA"
+                    'Vamos a determinar si la carroceria del auto ya esta seca (esperando alfombra) o no
                     For Each carroceria As Carroceria In listaCarrocerias
-                        If (carroceria.auto.num = empPA_colaLista.First.num) Then
-                            carroceria.estado = "/////"
-                            'listaCarrocerias.Remove(carroceria)
+                        If (carroceria.auto.num = areaAspirado_listaCola.First.auto.num And carroceria.estado = "Esperando Alfombra") Then
+                            If (empPA_cola = 0) Then
+                                empPA_estado = "O"
+                                empPA_colaLista.Add(carroceria.auto)
+                                carroceria.estado = "Siendo PA"
+                                areaAspirado_listaCola.First.estado = "Siendo PA"
+                                determinarFinPA()
+                            ElseIf (empPA_cola > 0) Then
+                                empPA_cola += 1
+                                empPA_colaLista.Add(carroceria.auto) 'tmb puede ser areaaspirado_listacola.first.auto ya que apuntan al mismo
+                                carroceria.estado = "Esperando PA"
+                                areaAspirado_listaCola.First.estado = "Esperando PA"
+                            End If
+                        ElseIf (carroceria.auto.num = areaAspirado_listaCola.First.auto.num And carroceria.estado <> "Esperando Alfombra") Then
+                            areaAspirado_listaCola.First.estado = "Esperando Carroceria"
                         End If
                     Next
-                    empPA_colaLista.Remove(empPA_colaLista.First)
-                    empPA_estado = "L"
-                    finPonerAlfombra_horaFin = -1.0R
-                    finPonerAlfombra_tiempo = -1.0R
-                ElseIf (empPA_cola > 0) Then
-                    empPA_cola -= 1
-                    empPA_colaLista.Remove(empPA_colaLista.First)
-                    determinarFinPA()
+                    If (areaAspirado_cola = 0) Then
+                        areaAspirado_estado = "L"
+                        areaAspirado_listaCola.Remove(areaAspirado_listaCola.First)
+                        finAspirado_horaFin = -1.0R
+                        finAspirado_RND = -1.0R
+                        finAspirado_tiempoAspirado = -1.0R
+                    ElseIf (areaAspirado_cola > 0) Then
+                        areaAspirado_cola -= 1
+                        areaAspirado_listaCola.Remove(areaAspirado_listaCola.First)
+                        determinarFinAA()
+                    End If
                 End If
-            End If
 
-            '--FIN ENTRADAS AL SISTEMA. COMIENZAN LAS OPERACIONES CON LA MATRIZ--
+                If (reloj = finLavado1_horaFin) Then
+                    evento = "Fin Lavado 1"
+                    Dim carroceriaLavada = espacioLavado1_carroceria
+                    carroceriaLavada.humedad = 100.0R
+                    finLavado1_horaFin = -1
+                    finLavado1_RND = -1
+                    finLavado1_tiempoLavado = -1
+                    Dim numK As Double
+                    If (carroceriaLavada.auto.tipo = "Pequeño") Then
+                        numK = 0.75R
+                    ElseIf (carroceriaLavada.auto.tipo = "Mediano") Then
+                        numK = 0.5R
+                    ElseIf (carroceriaLavada.auto.tipo = "PickUp") Then
+                        numK = 0.25R
+                    End If
+                    If (secadora_estado = "L") Then
+                        carroceriaLavada.estado = "Secando Maq"
+                        secadora_estado = "Secando 1"
+                        determinarFinSecadoMaquina1(carroceriaLavada.humedad, numK)
+                    ElseIf (secadora_estado = "Secando 2") Then
+                        carroceriaLavada.estado = "Secando Sola"
+                        determinarFinSecadoSolo1(carroceriaLavada.humedad, numK)
+                    End If
+                End If
 
-            'Vemos si hay que crear una columna de auto nueva
-            determinarColumnaAuto()
+                If (reloj = finLavado2_horaFin) Then
+                    evento = "Fin Lavado 2"
+                    Dim carroceriaLavada = espacioLavado2_carroceria
+                    carroceriaLavada.humedad = 100.0R
+                    Dim numK As Double
+                    finLavado2_horaFin = -1
+                    finLavado2_RND = -1
+                    finLavado2_tiempoLavado = -1
+                    If (carroceriaLavada.auto.tipo = "Pequeño") Then
+                        numK = 0.75R
+                    ElseIf (carroceriaLavada.auto.tipo = "Mediano") Then
+                        numK = 0.5R
+                    ElseIf (carroceriaLavada.auto.tipo = "PickUp") Then
+                        numK = 0.25R
+                    End If
+                    If (secadora_estado = "L") Then
+                        carroceriaLavada.estado = "Secando Maq"
+                        secadora_estado = "Secando 2"
+                        determinarFinSecadoMaquina2(carroceriaLavada.humedad, carroceriaLavada.auto.numK)
+                    ElseIf (secadora_estado = "Secando 1") Then
+                        carroceriaLavada.estado = "Secando Sola"
+                        determinarFinSecadoSolo2(carroceriaLavada.humedad, carroceriaLavada.auto.numK)
+                    End If
+                End If
 
-            'Vemos si hay que crear una columna de alfombra nueva
-            determinarColumnaAlfombra()
+                If (reloj = finSecado1_horaFin) Then
+                    evento = "Fin Secado 1"
+                    espacioLavado1_carroceria.humedad = 0.0R
+                    If (espacioLavado1_carroceria.estado = "Secando Maq" And espacioLavado2_estado = "O" And espacioLavado2_carroceria.estado = "Secando Sola") Then 'La carroceria en el espacio 1 tiene la secadora y hay una carroceria en el otro EL secandose sola
+                        secadora_estado = "Secando 2"
+                        espacioLavado2_carroceria.estado = "Secando Maq"
+                        Dim tiempoSecadoAnterior As Double
+                        Dim horaFinSecadoAnterior As Double
+                        Dim tiempoAnterior As Double
+                        Dim tiempoTranscurrido As Double
+                        With dgv_matriz
+                            tiempoSecadoAnterior = .Rows(.RowCount - 1).Cells(22).Value
+                            horaFinSecadoAnterior = .Rows(.RowCount - 1).Cells(23).Value
+                        End With
+                        tiempoAnterior = horaFinSecadoAnterior - tiempoSecadoAnterior
+                        tiempoTranscurrido = reloj - tiempoAnterior
+                        Dim humedadActual = determinarHumedadActual(espacioLavado2_carroceria.auto.numK, tiempoTranscurrido)
+                        determinarFinSecadoMaquina2(humedadActual, espacioLavado2_carroceria.auto.numK)
+                    End If
+                    'Vamos a determinar si la alfombra del auto ya se aspiró (esperando carroceria) o no
+                    For Each alfombra As Alfombra In listaAlfombras
+                        If (alfombra.auto.num = espacioLavado1_carroceria.auto.num And alfombra.estado = "Esperando Carroceria") Then
+                            If (empPA_cola = 0) Then
+                                empPA_estado = "O"
+                                empPA_colaLista.Add(alfombra.auto)
+                                alfombra.estado = "Siendo PA"
+                                espacioLavado1_carroceria.estado = "Siendo PA"
+                                determinarFinPA()
+                            ElseIf (empPA_cola > 0) Then
+                                empPA_cola += 1
+                                empPA_colaLista.Add(alfombra.auto) 'tmb puede ser espaciolavado1_carroceria.auto ya que apuntan al mismo
+                                alfombra.estado = "Esperando PA"
+                                espacioLavado2_carroceria.estado = "Esperando PA"
+                            End If
+                        ElseIf (alfombra.auto.num = espacioLavado1_carroceria.auto.num And alfombra.estado <> "Esperando Carroceria") Then
+                            espacioLavado2_carroceria.estado = "Esperando Alfombra"
+                        End If
+                    Next
+                    If (espaciosLavadoSecado_cola = 0) Then
+                        espacioLavado1_carroceria = Nothing
+                        espacioLavado1_estado = "L"
+                        finLavado1_RND() = -1.0R
+                        finLavado1_tiempoLavado() = -1.0R
+                        finLavado1_horaFin = -1.0R
+                    ElseIf (espaciosLavadoSecado_cola > 0) Then
+                        espacioLavado1_carroceria = espaciosLavadoSecado_colaLista.First
+                        espaciosLavadoSecado_colaLista.Remove(espaciosLavadoSecado_colaLista.First)
+                        espaciosLavadoSecado_cola -= 1
+                        espacioLavado1_carroceria.estado = "Siendo L"
+                        determinarFinLavado1()
+                    End If
+                End If
 
-            'Vemos si hay que crear una columna de carroceria nueva
-            determinarColumnaCarroceria()
+                If (reloj = finSecado2_horaFin) Then
+                    evento = "Fin Secado 2"
+                    espacioLavado2_carroceria.humedad = 0.0R
+                    If (espacioLavado2_carroceria.estado = "Secando Maq" And espacioLavado1_estado = "O" And espacioLavado1_carroceria.estado = "Secando Sola") Then 'La carroceria en el espacio 2 tiene la secadora y hay una carroceria en el otro EL secandose sola
+                        secadora_estado = "Secando 1"
+                        espacioLavado1_carroceria.estado = "Secando Maq"
+                        Dim tiempoSecadoAnterior As Double
+                        Dim horaFinSecadoAnterior As Double
+                        Dim tiempoAnterior As Double
+                        Dim tiempoTranscurrido As Double
+                        With dgv_matriz
+                            tiempoSecadoAnterior = .Rows(.RowCount - 1).Cells(19).Value
+                            horaFinSecadoAnterior = .Rows(.RowCount - 1).Cells(20).Value
+                        End With
+                        tiempoAnterior = horaFinSecadoAnterior - tiempoSecadoAnterior
+                        tiempoTranscurrido = reloj - tiempoAnterior
+                        Dim humedadActual = determinarHumedadActual(espacioLavado1_carroceria.auto.numK, tiempoTranscurrido)
+                        determinarFinSecadoMaquina1(humedadActual, espacioLavado1_carroceria.auto.numK)
+                    End If
+                    'Vamos a determinar si la alfombra del auto ya se aspiró (esperando carroceria) o no
+                    For Each alfombra As Alfombra In listaAlfombras
+                        If (alfombra.auto.num = espacioLavado2_carroceria.auto.num And alfombra.estado = "Esperando Carroceria") Then
+                            If (empPA_cola = 0) Then
+                                empPA_estado = "O"
+                                empPA_colaLista.Add(alfombra.auto)
+                                alfombra.estado = "Siendo PA"
+                                espacioLavado2_carroceria.estado = "Siendo PA"
+                                determinarFinPA()
+                            ElseIf (empPA_cola > 0) Then
+                                empPA_cola += 1
+                                empPA_colaLista.Add(alfombra.auto) 'tmb puede ser espaciolavado2_carroceria.auto ya que apuntan al mismo
+                                alfombra.estado = "Esperando PA"
+                                espacioLavado2_carroceria.estado = "Esperando PA"
+                            End If
+                        ElseIf (alfombra.auto.num = espacioLavado2_carroceria.auto.num And alfombra.estado <> "Esperando Carroceria") Then
+                            espacioLavado2_carroceria.estado = "Esperando Alfombra"
+                        End If
+                    Next
+                    If (espaciosLavadoSecado_cola = 0) Then 'SI NO HAY COLA EN LOS ESPACIOS DE LAVADO
+                        espacioLavado2_carroceria = Nothing
+                        espacioLavado2_estado = "L"
+                        finLavado2_RND() = -1.0R
+                        finLavado2_tiempoLavado() = -1.0R
+                        finLavado2_horaFin = -1.0R
+                    ElseIf (espaciosLavadoSecado_cola > 0) Then 'SI HAY COLA EN LOS ESPACIOS DE LAVADO
+                        espacioLavado2_carroceria = espaciosLavadoSecado_colaLista.First
+                        espaciosLavadoSecado_colaLista.Remove(espaciosLavadoSecado_colaLista.First)
+                        espaciosLavadoSecado_cola -= 1
+                        espacioLavado2_carroceria.estado = "Siendo L"
+                        determinarFinLavado2()
+                    End If
 
-            'sumar fila
-            Dim filaArray = New Object() {evento, reloj, llegadaAuto_RND, llegadaAuto_tiempoEntreLlegadas, llegadaAuto_horaLlegada, tipoAuto_RND, tipoAuto_tipo, finQuitarAlfombra_tiempo, finQuitarAlfombra_horaFin, finAspirado_RND, finAspirado_tiempoAspirado, finAspirado_horaFin, finLavado1_RND, finLavado1_tiempoLavado, finLavado1_horaFin, finLavado2_RND, finLavado2_tiempoLavado, finLavado2_horaFin, finSecado1_numK, finSecado1_tiempoSecado, finSecado1_horaFin, finSecado2_numK, finSecado2_tiempoSecado, finSecado2_horaFin, finPonerAlfombra_tiempo, finPonerAlfombra_horaFin, empQA_estado, empQA_cola, areaAspirado_estado, areaAspirado_cola, espacioLavado1_estado, espacioLavado2_estado, espaciosLavadoSecado_cola, secadora_estado, empPA_estado, empPA_cola}
-            Dim filaNueva As New ArrayList(filaArray)
-            If (contadorAutos > 0) Then
-                For i As Integer = 0 To (contadorAutos - 1)
-                    'If (listaAutos(i).estado <> "/////") Then
-                    filaNueva.Add(listaAutos(i).estado)
-                    filaNueva.Add(listaAutos(i).tipo)
-                    If (listaAlfombras.Count > 0) Then
-                        For j As Integer = 0 To (listaAlfombras.Count - 1)
-                            If (listaAlfombras(j).auto.num = listaAutos(i).num) Then
-                                filaNueva.Add(listaAlfombras(j).estado)
-                                filaNueva.Add(listaCarrocerias(j).estado)
+                End If
+
+                If (reloj = finPonerAlfombra_horaFin) Then
+                    evento = "Fin PA"
+                    'Eliminamos el auto, la alfombra y la carroceria del sistema
+                    If (empPA_cola = 0) Then
+                        empPA_colaLista.First.estado = "/////"
+                        empPA_colaLista.First.tipo = "/////"
+                        'listaAutos.Remove(empPA_colaLista.First)
+                        For Each alfombra As Alfombra In listaAlfombras
+                            If (alfombra.auto.num = empPA_colaLista.First.num) Then
+                                alfombra.estado = "/////"
+                                'listaAlfombras.Remove(alfombra)
                             End If
                         Next
+                        For Each carroceria As Carroceria In listaCarrocerias
+                            If (carroceria.auto.num = empPA_colaLista.First.num) Then
+                                carroceria.estado = "/////"
+                                'listaCarrocerias.Remove(carroceria)
+                            End If
+                        Next
+                        empPA_colaLista.Remove(empPA_colaLista.First)
+                        empPA_estado = "L"
+                        finPonerAlfombra_horaFin = -1.0R
+                        finPonerAlfombra_tiempo = -1.0R
+                    ElseIf (empPA_cola > 0) Then
+                        empPA_cola -= 1
+                        empPA_colaLista.Remove(empPA_colaLista.First)
+                        determinarFinPA()
                     End If
-                    'ElseIf (listaAutos(i).estado = "/////") Then
-                    '    listaAutos.RemoveAt(i)
-                    '    listaAlfombras.RemoveAt(i)
-                    '    listaCarrocerias.RemoveAt(i)
-                    '    filaNueva.Add("")
-                    '    filaNueva.Add("")
-                    '    filaNueva.Add("")
-                    '    filaNueva.Add("")
-                    'End If
-                Next
-            End If
-            dgv_matriz.Rows.Add(CType(filaNueva.ToArray(GetType(Object)), Object()))
+                End If
 
-            'calcular proximo evento
-            calcularProximoEvento()
-        Loop
+                '--FIN ENTRADAS AL SISTEMA. COMIENZAN LAS OPERACIONES CON LA MATRIZ--
+
+                'Vemos si hay que crear una columna de auto nueva
+                determinarColumnaAuto()
+
+                'Vemos si hay que crear una columna de alfombra nueva
+                determinarColumnaAlfombra()
+
+                'Vemos si hay que crear una columna de carroceria nueva
+                determinarColumnaCarroceria()
+
+                'sumar fila
+                Dim filaArray = New Object() {evento, reloj, llegadaAuto_RND, llegadaAuto_tiempoEntreLlegadas, llegadaAuto_horaLlegada, tipoAuto_RND, tipoAuto_tipo, finQuitarAlfombra_tiempo, finQuitarAlfombra_horaFin, finAspirado_RND, finAspirado_tiempoAspirado, finAspirado_horaFin, finLavado1_RND, finLavado1_tiempoLavado, finLavado1_horaFin, finLavado2_RND, finLavado2_tiempoLavado, finLavado2_horaFin, finSecado1_numK, finSecado1_tiempoSecado, finSecado1_horaFin, finSecado2_numK, finSecado2_tiempoSecado, finSecado2_horaFin, finPonerAlfombra_tiempo, finPonerAlfombra_horaFin, empQA_estado, empQA_cola, areaAspirado_estado, areaAspirado_cola, espacioLavado1_estado, espacioLavado2_estado, espaciosLavadoSecado_cola, secadora_estado, empPA_estado, empPA_cola}
+                Dim filaNueva As New ArrayList(filaArray)
+                If (contadorAutos > 0) Then
+                    For i As Integer = 0 To (contadorAutos - 1)
+                        'If (listaAutos(i).estado <> "/////") Then
+                        filaNueva.Add(listaAutos(i).estado)
+                        filaNueva.Add(listaAutos(i).tipo)
+                        If (listaAlfombras.Count > 0) Then
+                            For j As Integer = 0 To (listaAlfombras.Count - 1)
+                                If (listaAlfombras(j).auto.num = listaAutos(i).num) Then
+                                    filaNueva.Add(listaAlfombras(j).estado)
+                                    filaNueva.Add(listaCarrocerias(j).estado)
+                                End If
+                            Next
+                        End If
+                        'ElseIf (listaAutos(i).estado = "/////") Then
+                        '    listaAutos.RemoveAt(i)
+                        '    listaAlfombras.RemoveAt(i)
+                        '    listaCarrocerias.RemoveAt(i)
+                        '    filaNueva.Add("")
+                        '    filaNueva.Add("")
+                        '    filaNueva.Add("")
+                        '    filaNueva.Add("")
+                        'End If
+                    Next
+                End If
+                dgv_matriz.Rows.Add(CType(filaNueva.ToArray(GetType(Object)), Object()))
+
+                'calcular proximo evento
+                calcularProximoEvento()
+            Loop
+        Catch ex As Exception
+            Dim trace = New System.Diagnostics.StackTrace(ex, True)
+            MsgBox(ex.Message & vbCrLf & "Error in ClaimFlag10 - Line number:" & trace.GetFrame(0).GetFileLineNumber().ToString)
+            Debug.WriteLine(ex.Message & vbCrLf & "Error in ClaimFlag10 - Line number:" & trace.GetFrame(0).GetFileLineNumber().ToString)
+        End Try
     End Sub
 
     Private Sub determinarFinPA()
