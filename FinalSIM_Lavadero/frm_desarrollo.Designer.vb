@@ -421,7 +421,7 @@ Partial Class frm_desarrollo
         Me.col_etadosecadora.HeaderText = "Estado (S)"
         Me.col_etadosecadora.Name = "col_etadosecadora"
         Me.col_etadosecadora.ReadOnly = True
-        Me.col_etadosecadora.Width = 50
+        Me.col_etadosecadora.Width = 70
         '
         'col_estadoEPA
         '
