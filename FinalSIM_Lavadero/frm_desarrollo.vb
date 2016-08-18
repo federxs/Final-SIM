@@ -68,7 +68,7 @@
         'Cambiamos tamaños de columnas
         Show()
         Try
-            Do While (reloj < 50)
+            Do While (reloj < 1000)
 
                 If (reloj = 0) Then 'primera iteracion
                     evento = "Inicio"
@@ -77,7 +77,7 @@
 
                 If (reloj = llegadaAuto_horaLlegada) Then
                     contadorAutos += 1
-                    evento = "Llegada Auto"
+                    evento = "Llegada Auto " & contadorAutos
                     'crear un auto
                     Dim autoNuevo As New Automovil()
                     determinarTipoAuto(autoNuevo)
@@ -95,8 +95,8 @@
                     End If
 
                     'Sumamos las columnas del auto, la alfombra y la carroceria
-                    dgv_matriz.Columns.Add("col_estadoA" & contadorAutos, "EstadoA" & contadorAutos)
-                    dgv_matriz.Columns.Add("col_tipoA" & contadorAutos, "TipoA" & contadorAutos)
+                    dgv_matriz.Columns.Add("col_estadoA" & contadorAutos, "EstadoAuto" & contadorAutos)
+                    dgv_matriz.Columns.Add("col_tipoA" & contadorAutos, "TipoAuto" & contadorAutos)
                     dgv_matriz.Columns.Add("col_estadoAlf" & contadorAutos, "EstadoAlf" & contadorAutos)
                     dgv_matriz.Columns.Add("col_estadoCar" & contadorAutos, "EstadoCar" & contadorAutos)
 
@@ -112,9 +112,7 @@
                     finLavado2_RND = -1
                     finLavado2_tiempoLavado = -1
                     finSecado1_numK = -1
-                    finSecado1_tiempoSecado = -1
                     finSecado2_numK = -1
-                    finSecado2_tiempoSecado = -1
                     finPonerAlfombra_tiempo = -1
                 End If
 
@@ -191,9 +189,7 @@
                     llegadaAuto_RND = -1
                     llegadaAuto_tiempoEntreLlegadas = -1
                     finSecado1_numK = -1
-                    finSecado1_tiempoSecado = -1
                     finSecado2_numK = -1
-                    finSecado2_tiempoSecado = -1
                     finPonerAlfombra_tiempo = -1
                 End If
 
@@ -240,9 +236,7 @@
                     finLavado2_RND = -1
                     finLavado2_tiempoLavado = -1
                     finSecado1_numK = -1
-                    finSecado1_tiempoSecado = -1
                     finSecado2_numK = -1
-                    finSecado2_tiempoSecado = -1
                 End If
 
                 If (reloj = finLavado1_horaFin) Then
@@ -269,7 +263,6 @@
                     finLavado2_RND = -1
                     finLavado2_tiempoLavado = -1
                     finSecado2_numK = -1
-                    finSecado2_tiempoSecado = -1
                     finPonerAlfombra_tiempo = -1
                     finAspirado_RND = -1
                     finAspirado_tiempoAspirado = -1
@@ -299,7 +292,6 @@
                     finLavado1_RND = -1
                     finLavado1_tiempoLavado = -1
                     finSecado1_numK = -1
-                    finSecado1_tiempoSecado = -1
                     finPonerAlfombra_tiempo = -1
                     finAspirado_RND = -1
                     finAspirado_tiempoAspirado = -1
@@ -324,10 +316,11 @@
                             tiempoTranscurrido = reloj - tiempoAnterior
                             Dim humedadActual = determinarHumedadActual(espacioLavado2_carroceria.auto.numK, tiempoTranscurrido)
                             determinarFinSecadoMaquina2(humedadActual, espacioLavado2_carroceria.auto.numK)
-                        ElseIf ((espacioLavado1_carroceria.estado = "Secando Maq" And espacioLavado2_estado = "O" And espacioLavado2_carroceria.estado = "Siendo L") _
-                                Or (espacioLavado1_carroceria.estado = "Secando Maq" And espacioLavado2_estado = "L")) Then
+                        ElseIf (espacioLavado2_carroceria.estado = "Siendo L" And espacioLavado1_carroceria.estado = "Secando Maq") Then
                             secadora_estado = "L"
                         End If
+                    ElseIf (espacioLavado2_estado = "L") Then
+                        secadora_estado = "L"
                     End If
                     'Vamos a determinar si la alfombra del auto ya se aspiró (esperando carroceria) o no
                     For Each alfombra As Alfombra In listaAlfombras
@@ -394,10 +387,11 @@
                             tiempoTranscurrido = reloj - tiempoAnterior
                             Dim humedadActual = determinarHumedadActual(espacioLavado1_carroceria.auto.numK, tiempoTranscurrido)
                             determinarFinSecadoMaquina1(humedadActual, espacioLavado1_carroceria.auto.numK)
-                        ElseIf ((espacioLavado2_carroceria.estado = "Secando Maq" And espacioLavado1_estado = "O" And espacioLavado1_carroceria.estado = "Siendo L") _
-                                Or (espacioLavado2_carroceria.estado = "Secando Maq" And espacioLavado2_estado = "L")) Then
+                        ElseIf (espacioLavado1_carroceria.estado = "Siendo L" And espacioLavado2_carroceria.estado = "Secando Maq") Then
                             secadora_estado = "L"
                         End If
+                    ElseIf (espacioLavado1_estado = "L") Then
+                        secadora_estado = "L"
                     End If
                     'Vamos a determinar si la alfombra del auto ya se aspiró (esperando carroceria) o no
                     For Each alfombra As Alfombra In listaAlfombras
@@ -484,9 +478,7 @@
                     finLavado2_RND = -1
                     finLavado2_tiempoLavado = -1
                     finSecado1_numK = -1
-                    finSecado1_tiempoSecado = -1
                     finSecado2_numK = -1.0R
-                    finSecado2_tiempoSecado = -1.0R
                     finAspirado_RND = -1
                     finAspirado_tiempoAspirado = -1
                 End If
@@ -505,9 +497,9 @@
                 'sumar fila
                 Dim filaArray = New Object() {evento, reloj, llegadaAuto_RND, llegadaAuto_tiempoEntreLlegadas, llegadaAuto_horaLlegada, tipoAuto_RND, tipoAuto_tipo, finQuitarAlfombra_tiempo, finQuitarAlfombra_horaFin, finAspirado_RND, finAspirado_tiempoAspirado, finAspirado_horaFin, finLavado1_RND, finLavado1_tiempoLavado, finLavado1_horaFin, finLavado2_RND, finLavado2_tiempoLavado, finLavado2_horaFin, finSecado1_numK, finSecado1_tiempoSecado, finSecado1_horaFin, finSecado2_numK, finSecado2_tiempoSecado, finSecado2_horaFin, finPonerAlfombra_tiempo, finPonerAlfombra_horaFin, empQA_estado, empQA_cola, areaAspirado_estado, areaAspirado_cola, espacioLavado1_estado, espacioLavado2_estado, espaciosLavadoSecado_cola, secadora_estado, empPA_estado, empPA_cola}
                 Dim filaNueva As New ArrayList(filaArray)
+                'Dim contadorAutosBorrados = 0
                 If (contadorAutos > 0) Then
                     For i As Integer = 0 To (contadorAutos - 1)
-                        'If (listaAutos(i).estado <> "/////") Then
                         filaNueva.Add(listaAutos(i).estado)
                         filaNueva.Add(listaAutos(i).tipo)
                         If (listaAlfombras.Count > 0) Then
@@ -518,15 +510,6 @@
                                 End If
                             Next
                         End If
-                        'ElseIf (listaAutos(i).estado = "/////") Then
-                        '    listaAutos.RemoveAt(i)
-                        '    listaAlfombras.RemoveAt(i)
-                        '    listaCarrocerias.RemoveAt(i)
-                        '    filaNueva.Add("")
-                        '    filaNueva.Add("")
-                        '    filaNueva.Add("")
-                        '    filaNueva.Add("")
-                        'End If
                     Next
                 End If
                 dgv_matriz.Rows.Add(CType(filaNueva.ToArray(GetType(Object)), Object()))
@@ -535,9 +518,10 @@
                 calcularProximoEvento()
             Loop
         Catch ex As Exception
-            Dim trace = New System.Diagnostics.StackTrace(ex, True)
-            MsgBox(ex.Message & vbCrLf & "Error in ClaimFlag10 - Line number:" & trace.GetFrame(0).GetFileLineNumber().ToString)
-            Debug.WriteLine(ex.Message & vbCrLf & "Error in ClaimFlag10 - Line number:" & trace.GetFrame(0).GetFileLineNumber().ToString)
+            Throw ex
+            'Dim trace = New System.Diagnostics.StackTrace(ex, True)
+            'MsgBox(ex.Message & vbCrLf & "Error in ClaimFlag10 - Line number:" & trace.GetFrame(0).GetFileLineNumber().ToString)
+            'Debug.WriteLine(ex.Message & vbCrLf & "Error in ClaimFlag10 - Line number:" & trace.GetFrame(0).GetFileLineNumber().ToString)
         End Try
     End Sub
 
