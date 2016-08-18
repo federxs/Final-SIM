@@ -97,8 +97,8 @@
                     'Sumamos las columnas del auto, la alfombra y la carroceria
                     dgv_matriz.Columns.Add("col_estadoA" & contadorAutos, "EstadoA" & contadorAutos)
                     dgv_matriz.Columns.Add("col_tipoA" & contadorAutos, "TipoA" & contadorAutos)
-                    dgv_matriz.Columns.Add("col_estadoCar" & contadorAutos, "EstadoCar" & contadorAutos)
                     dgv_matriz.Columns.Add("col_estadoAlf" & contadorAutos, "EstadoAlf" & contadorAutos)
+                    dgv_matriz.Columns.Add("col_estadoCar" & contadorAutos, "EstadoCar" & contadorAutos)
 
                     'otra llegada
                     determinarLlegadaAuto()
@@ -284,10 +284,10 @@
                     If (secadora_estado = "L") Then
                         espacioLavado2_carroceria.estado = "Secando Maq"
                         secadora_estado = "Secando 2"
-                        determinarFinSecadoMaquina2(espacioLavado2_carroceria.humedad, espacioLavado1_carroceria.auto.numK)
+                        determinarFinSecadoMaquina2(espacioLavado2_carroceria.humedad, espacioLavado2_carroceria.auto.numK)
                     ElseIf (secadora_estado = "Secando 1") Then
                         espacioLavado2_carroceria.estado = "Secando Sola"
-                        determinarFinSecadoSolo2(espacioLavado2_carroceria.humedad, espacioLavado1_carroceria.auto.numK)
+                        determinarFinSecadoSolo2(espacioLavado2_carroceria.humedad, espacioLavado2_carroceria.auto.numK)
                     End If
 
                     'blanqueamos campos
@@ -308,24 +308,26 @@
                 If (reloj = finSecado1_horaFin) Then
                     evento = "Fin Secado 1"
                     espacioLavado1_carroceria.humedad = 0.0R
-                    If (espacioLavado1_carroceria.estado = "Secando Maq" And espacioLavado2_estado = "O" And espacioLavado2_carroceria.estado = "Secando Sola") Then 'La carroceria en el espacio 1 tiene la secadora y hay una carroceria en el otro EL secandose sola
-                        secadora_estado = "Secando 2"
-                        espacioLavado2_carroceria.estado = "Secando Maq"
-                        Dim tiempoSecadoAnterior As Double
-                        Dim horaFinSecadoAnterior As Double
-                        Dim tiempoAnterior As Double
-                        Dim tiempoTranscurrido As Double
-                        With dgv_matriz
-                            tiempoSecadoAnterior = .Rows(.RowCount - 1).Cells(22).Value
-                            horaFinSecadoAnterior = .Rows(.RowCount - 1).Cells(23).Value
-                        End With
-                        tiempoAnterior = horaFinSecadoAnterior - tiempoSecadoAnterior
-                        tiempoTranscurrido = reloj - tiempoAnterior
-                        Dim humedadActual = determinarHumedadActual(espacioLavado2_carroceria.auto.numK, tiempoTranscurrido)
-                        determinarFinSecadoMaquina2(humedadActual, espacioLavado2_carroceria.auto.numK)
-                    ElseIf ((espacioLavado1_carroceria.estado = "Secando Maq" And espacioLavado2_estado = "O" And espacioLavado2_carroceria.estado = "Siendo L") _
-                            Or (espacioLavado1_carroceria.estado = "Secando Maq" And espacioLavado2_estado = "L")) Then
-                        secadora_estado = "L"
+                    If (espacioLavado2_estado = "O") Then
+                        If (espacioLavado2_carroceria.estado = "Secando Sola" And espacioLavado1_carroceria.estado = "Secando Maq") Then  'La carroceria en el espacio 1 tiene la secadora y hay una carroceria en el otro EL secandose sola
+                            secadora_estado = "Secando 2"
+                            espacioLavado2_carroceria.estado = "Secando Maq"
+                            Dim tiempoSecadoAnterior As Double
+                            Dim horaFinSecadoAnterior As Double
+                            Dim tiempoAnterior As Double
+                            Dim tiempoTranscurrido As Double
+                            With dgv_matriz
+                                tiempoSecadoAnterior = .Rows(.RowCount - 1).Cells(22).Value
+                                horaFinSecadoAnterior = .Rows(.RowCount - 1).Cells(23).Value
+                            End With
+                            tiempoAnterior = horaFinSecadoAnterior - tiempoSecadoAnterior
+                            tiempoTranscurrido = reloj - tiempoAnterior
+                            Dim humedadActual = determinarHumedadActual(espacioLavado2_carroceria.auto.numK, tiempoTranscurrido)
+                            determinarFinSecadoMaquina2(humedadActual, espacioLavado2_carroceria.auto.numK)
+                        ElseIf ((espacioLavado1_carroceria.estado = "Secando Maq" And espacioLavado2_estado = "O" And espacioLavado2_carroceria.estado = "Siendo L") _
+                                Or (espacioLavado1_carroceria.estado = "Secando Maq" And espacioLavado2_estado = "L")) Then
+                            secadora_estado = "L"
+                        End If
                     End If
                     'Vamos a determinar si la alfombra del auto ya se aspiró (esperando carroceria) o no
                     For Each alfombra As Alfombra In listaAlfombras
@@ -376,24 +378,26 @@
                     evento = "Fin Secado 2"
                     espacioLavado2_carroceria.humedad = 0.0R
                     'Recalcular tiempo de secado en caso que corresponda
-                    If (espacioLavado2_carroceria.estado = "Secando Maq" And espacioLavado1_estado = "O" And espacioLavado1_carroceria.estado = "Secando Sola") Then 'La carroceria en el espacio 2 tiene la secadora y hay una carroceria en el otro EL secandose sola
-                        secadora_estado = "Secando 1"
-                        espacioLavado1_carroceria.estado = "Secando Maq"
-                        Dim tiempoSecadoAnterior As Double
-                        Dim horaFinSecadoAnterior As Double
-                        Dim tiempoAnterior As Double
-                        Dim tiempoTranscurrido As Double
-                        With dgv_matriz
-                            tiempoSecadoAnterior = .Rows(.RowCount - 1).Cells(19).Value
-                            horaFinSecadoAnterior = .Rows(.RowCount - 1).Cells(20).Value
-                        End With
-                        tiempoAnterior = horaFinSecadoAnterior - tiempoSecadoAnterior
-                        tiempoTranscurrido = reloj - tiempoAnterior
-                        Dim humedadActual = determinarHumedadActual(espacioLavado1_carroceria.auto.numK, tiempoTranscurrido)
-                        determinarFinSecadoMaquina1(humedadActual, espacioLavado1_carroceria.auto.numK)
-                    ElseIf ((espacioLavado2_carroceria.estado = "Secando Maq" And espacioLavado1_estado = "O" And espacioLavado1_carroceria.estado = "Siendo L") _
-                            Or (espacioLavado2_carroceria.estado = "Secando Maq" And espacioLavado2_estado = "L")) Then
-                        secadora_estado = "L"
+                    If (espacioLavado1_estado = "O") Then
+                        If (espacioLavado1_carroceria.estado = "Secando Sola" And espacioLavado2_carroceria.estado = "Secando Maq") Then  'La carroceria en el espacio 2 tiene la secadora y hay una carroceria en el otro EL secandose sola
+                            secadora_estado = "Secando 1"
+                            espacioLavado1_carroceria.estado = "Secando Maq"
+                            Dim tiempoSecadoAnterior As Double
+                            Dim horaFinSecadoAnterior As Double
+                            Dim tiempoAnterior As Double
+                            Dim tiempoTranscurrido As Double
+                            With dgv_matriz
+                                tiempoSecadoAnterior = .Rows(.RowCount - 1).Cells(19).Value
+                                horaFinSecadoAnterior = .Rows(.RowCount - 1).Cells(20).Value
+                            End With
+                            tiempoAnterior = horaFinSecadoAnterior - tiempoSecadoAnterior
+                            tiempoTranscurrido = reloj - tiempoAnterior
+                            Dim humedadActual = determinarHumedadActual(espacioLavado1_carroceria.auto.numK, tiempoTranscurrido)
+                            determinarFinSecadoMaquina1(humedadActual, espacioLavado1_carroceria.auto.numK)
+                        ElseIf ((espacioLavado2_carroceria.estado = "Secando Maq" And espacioLavado1_estado = "O" And espacioLavado1_carroceria.estado = "Siendo L") _
+                                Or (espacioLavado2_carroceria.estado = "Secando Maq" And espacioLavado2_estado = "L")) Then
+                            secadora_estado = "L"
+                        End If
                     End If
                     'Vamos a determinar si la alfombra del auto ya se aspiró (esperando carroceria) o no
                     For Each alfombra As Alfombra In listaAlfombras
@@ -569,7 +573,7 @@
 
         tiempoInicial = 0.0R
         humedadInicial = humedad
-        Do While (humedadInicial > Math.Round(0.0R, 2))
+        Do While (humedadInicial > 0.0)
             tiempoSiguiente += h
             humedadSiguiente = humedadInicial + h * ((-5) * Math.Pow(tiempoInicial, 2) + 2.0R * humedadInicial - 200.0R)
             tiempoInicial = tiempoSiguiente
@@ -589,9 +593,9 @@
 
         tiempoInicial = 0.0R
         humedadInicial = humedad
-        Do While (humedadInicial > Math.Round(0.0R, 2))
+        Do While (Math.Round(humedadInicial, 0) > 0.0)
             tiempoSiguiente += h
-            humedadSiguiente = humedadInicial + h * (-numK * humedadInicial)
+            humedadSiguiente = humedadInicial + h * ((-numK) * humedadInicial)
             tiempoInicial = tiempoSiguiente
             humedadInicial = humedadSiguiente
         Loop
@@ -609,7 +613,7 @@
 
         tiempoInicial = 0.0R
         humedadInicial = humedad
-        Do While (humedadInicial > Math.Round(0.0R, 2))
+        Do While (humedadInicial > 0.0)
             tiempoSiguiente += h
             humedadSiguiente = humedadInicial + h * ((-5) * Math.Pow(tiempoInicial, 2) + 2.0R * humedadInicial - 200.0R)
             tiempoInicial = tiempoSiguiente
@@ -629,9 +633,9 @@
 
         tiempoInicial = 0.0R
         humedadInicial = humedad
-        Do While (humedadInicial > Math.Round(0.0R, 2))
+        Do While (Math.Round(humedadInicial, 0) > 0.0)
             tiempoSiguiente += h
-            humedadSiguiente = humedadInicial + h * (-numK * humedadInicial)
+            humedadSiguiente = humedadInicial + h * ((-numK) * humedadInicial)
             tiempoInicial = tiempoSiguiente
             humedadInicial = humedadSiguiente
         Loop
@@ -671,13 +675,13 @@
 
     Private Sub determinarTipoAuto(auto As Automovil)
         tipoAuto_RND = Math.Round(random.NextDouble(), 2)
-        If (tipoAuto_RND >= 0 And tipoAuto_RND <= 19) Then
+        If (tipoAuto_RND >= 0 And tipoAuto_RND <= 0.19) Then
             auto.tipo = "Pequeño"
             auto.numK = 0.75
-        ElseIf (tipoAuto_RND >= 20 And tipoAuto_RND <= 69) Then
+        ElseIf (tipoAuto_RND >= 0.2 And tipoAuto_RND <= 0.69) Then
             auto.tipo = "Mediano"
             auto.numK = 0.5
-        ElseIf (tipoAuto_RND >= 70 And tipoAuto_RND <= 99) Then
+        ElseIf (tipoAuto_RND >= 0.7 And tipoAuto_RND <= 0.99) Then
             auto.tipo = "PickUp"
             auto.numK = 0.25
         End If
