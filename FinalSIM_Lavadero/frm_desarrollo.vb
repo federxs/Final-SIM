@@ -71,7 +71,7 @@
         crearTablaDatos()
         Show()
         Try
-            Do While (reloj < 150)
+            Do While (reloj < 200)
 
                 If (reloj = 0) Then 'primera iteracion
                     evento = "Inicio"
@@ -201,13 +201,13 @@
                     'Vamos a determinar si la carroceria del auto ya esta seca (esperando alfombra) o no
                     For Each carroceria As Carroceria In listaCarrocerias
                         If (carroceria.auto.num = areaAspirado_listaCola.First.auto.num And carroceria.estado = "Esperando Alfombra") Then
-                            If (empPA_cola = 0) Then
+                            If (empPA_estado = "L") Then
                                 empPA_estado = "O"
                                 empPA_colaLista.Add(carroceria.auto)
                                 carroceria.estado = "Siendo PA"
                                 areaAspirado_listaCola.First.estado = "Siendo PA"
                                 determinarFinPA()
-                            ElseIf (empPA_cola > 0) Then
+                            ElseIf (empPA_estado = "O") Then
                                 empPA_cola += 1
                                 empPA_colaLista.Add(carroceria.auto) 'tmb puede ser areaaspirado_listacola.first.auto ya que apuntan al mismo
                                 carroceria.estado = "Esperando PA"
@@ -311,9 +311,9 @@
                             Dim horaFinSecadoAnterior As Double
                             Dim tiempoAnterior As Double
                             Dim tiempoTranscurrido As Double
-                            With dgv_matriz
-                                tiempoSecadoAnterior = .Rows(.RowCount - 1).Cells(22).Value
-                                horaFinSecadoAnterior = .Rows(.RowCount - 1).Cells(23).Value
+                            With tablaDatos
+                                tiempoSecadoAnterior = .Rows(.Rows.Count - 1)(22)
+                                horaFinSecadoAnterior = .Rows(.Rows.Count - 1)(23)
                             End With
                             tiempoAnterior = horaFinSecadoAnterior - tiempoSecadoAnterior
                             tiempoTranscurrido = reloj - tiempoAnterior
@@ -444,29 +444,25 @@
                 If (reloj = finPonerAlfombra_horaFin) Then
                     evento = "Fin PA"
                     'Eliminamos el auto, la alfombra y la carroceria del sistema
+                    empPA_colaLista.First.estado = "/////"
+                    empPA_colaLista.First.tipo = "/////"
+                    For Each alfombra As Alfombra In listaAlfombras
+                        If (alfombra.auto.num = empPA_colaLista.First.num) Then
+                            alfombra.estado = "/////"
+                        End If
+                    Next
+                    For Each carroceria As Carroceria In listaCarrocerias
+                        If (carroceria.auto.num = empPA_colaLista.First.num) Then
+                            carroceria.estado = "/////"
+                        End If
+                    Next
+                    empPA_colaLista.Remove(empPA_colaLista.First)
                     If (empPA_cola = 0) Then
-                        empPA_colaLista.First.estado = "/////"
-                        empPA_colaLista.First.tipo = "/////"
-                        'listaAutos.Remove(empPA_colaLista.First)
-                        For Each alfombra As Alfombra In listaAlfombras
-                            If (alfombra.auto.num = empPA_colaLista.First.num) Then
-                                alfombra.estado = "/////"
-                                'listaAlfombras.Remove(alfombra)
-                            End If
-                        Next
-                        For Each carroceria As Carroceria In listaCarrocerias
-                            If (carroceria.auto.num = empPA_colaLista.First.num) Then
-                                carroceria.estado = "/////"
-                                'listaCarrocerias.Remove(carroceria)
-                            End If
-                        Next
-                        empPA_colaLista.Remove(empPA_colaLista.First)
                         empPA_estado = "L"
                         finPonerAlfombra_horaFin = -1.0R
                         finPonerAlfombra_tiempo = -1.0R
                     ElseIf (empPA_cola > 0) Then
                         empPA_cola -= 1
-                        empPA_colaLista.Remove(empPA_colaLista.First)
                         determinarFinPA()
                     End If
 
