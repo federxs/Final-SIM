@@ -60,15 +60,18 @@
     Dim empPA_colaLista As New List(Of Automovil)
 
     Dim random As New Random()
+
+    Dim tablaDatos As New DataTable("tablaDatos")
     'Fin inicializacion
 
     Private Sub frm_desarrollo_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Maximizamos ventana
         'Me.WindowState = FormWindowState.Maximized
-        'Cambiamos tamaños de columnas
+        'Creamos el datatable con las columnas basicas
+        crearTablaDatos()
         Show()
         Try
-            Do While (reloj < 1000)
+            Do While (reloj < 150)
 
                 If (reloj = 0) Then 'primera iteracion
                     evento = "Inicio"
@@ -95,10 +98,10 @@
                     End If
 
                     'Sumamos las columnas del auto, la alfombra y la carroceria
-                    dgv_matriz.Columns.Add("col_estadoA" & contadorAutos, "EstadoAuto" & contadorAutos)
-                    dgv_matriz.Columns.Add("col_tipoA" & contadorAutos, "TipoAuto" & contadorAutos)
-                    dgv_matriz.Columns.Add("col_estadoAlf" & contadorAutos, "EstadoAlf" & contadorAutos)
-                    dgv_matriz.Columns.Add("col_estadoCar" & contadorAutos, "EstadoCar" & contadorAutos)
+                    tablaDatos.Columns.Add("Estado Auto" & contadorAutos, GetType(String))
+                    tablaDatos.Columns.Add("Tipo Auto" & contadorAutos, GetType(String))
+                    tablaDatos.Columns.Add("Estado Alf" & contadorAutos, GetType(String))
+                    tablaDatos.Columns.Add("Estado Car" & contadorAutos, GetType(String))
 
                     'otra llegada
                     determinarLlegadaAuto()
@@ -379,9 +382,9 @@
                             Dim horaFinSecadoAnterior As Double
                             Dim tiempoAnterior As Double
                             Dim tiempoTranscurrido As Double
-                            With dgv_matriz
-                                tiempoSecadoAnterior = .Rows(.RowCount - 1).Cells(19).Value
-                                horaFinSecadoAnterior = .Rows(.RowCount - 1).Cells(20).Value
+                            With tablaDatos
+                                tiempoSecadoAnterior = .Rows(.Rows.Count - 1)(19)
+                                horaFinSecadoAnterior = .Rows(.Rows.Count - 1)(20)
                             End With
                             tiempoAnterior = horaFinSecadoAnterior - tiempoSecadoAnterior
                             tiempoTranscurrido = reloj - tiempoAnterior
@@ -512,11 +515,13 @@
                         End If
                     Next
                 End If
-                dgv_matriz.Rows.Add(CType(filaNueva.ToArray(GetType(Object)), Object()))
+                tablaDatos.Rows.Add(CType(filaNueva.ToArray(GetType(Object)), Object()))
 
                 'calcular proximo evento
                 calcularProximoEvento()
             Loop
+            dgv_matriz.DataSource = tablaDatos
+            ' dgv_matriz.DataMember = "tablaDatos"
         Catch ex As Exception
             Throw ex
             'Dim trace = New System.Diagnostics.StackTrace(ex, True)
@@ -765,4 +770,43 @@
         End If
     End Sub
 
+    Public Sub crearTablaDatos()
+        'son 36 columnas las basicas
+        tablaDatos.Columns.Add("Evento", GetType(String))
+        tablaDatos.Columns.Add("Tiempo Sistema", GetType(String))
+        tablaDatos.Columns.Add("RND(LA)", GetType(String))
+        tablaDatos.Columns.Add("T.Entre Llegadas(LA)", GetType(String))
+        tablaDatos.Columns.Add("H. Llegada(LA)", GetType(String))
+        tablaDatos.Columns.Add("RND(Tipo)", GetType(String))
+        tablaDatos.Columns.Add("Tipo", GetType(String))
+        tablaDatos.Columns.Add("T.(QA)", GetType(String))
+        tablaDatos.Columns.Add("H.Fin(QA)", GetType(String))
+        tablaDatos.Columns.Add("RND(AA)", GetType(String))
+        tablaDatos.Columns.Add("T.Aspirado(AA)", GetType(String))
+        tablaDatos.Columns.Add("H.Fin Aspirado(AA)", GetType(String))
+        tablaDatos.Columns.Add("RND(FL1)", GetType(String))
+        tablaDatos.Columns.Add("T. Lavado(FL1)", GetType(String))
+        tablaDatos.Columns.Add("H. Fin Lavado(FL1)", GetType(String))
+        tablaDatos.Columns.Add("RND(FL2)", GetType(String))
+        tablaDatos.Columns.Add("T. Lavado(FL2)", GetType(String))
+        tablaDatos.Columns.Add("H. Fin Lavado(FL2)", GetType(String))
+        tablaDatos.Columns.Add("K(FS1)", GetType(String))
+        tablaDatos.Columns.Add("T. Secado(FS1)", GetType(String))
+        tablaDatos.Columns.Add("H. Fin Secado(FS1)", GetType(String))
+        tablaDatos.Columns.Add("K(FS2)", GetType(String))
+        tablaDatos.Columns.Add("T. Secado(FS2)", GetType(String))
+        tablaDatos.Columns.Add("H. Fin Secado(FS2)", GetType(String))
+        tablaDatos.Columns.Add("T.(PA)", GetType(String))
+        tablaDatos.Columns.Add("H. Fin(PA)", GetType(String))
+        tablaDatos.Columns.Add("Estado (QA)", GetType(String))
+        tablaDatos.Columns.Add("Cola (QA)", GetType(String))
+        tablaDatos.Columns.Add("Estado (AA)", GetType(String))
+        tablaDatos.Columns.Add("Cola (AA)", GetType(String))
+        tablaDatos.Columns.Add("Estado (EL1)", GetType(String))
+        tablaDatos.Columns.Add("Estado (EL2)", GetType(String))
+        tablaDatos.Columns.Add("Cola (EL)", GetType(String))
+        tablaDatos.Columns.Add("Estado (S)", GetType(String))
+        tablaDatos.Columns.Add("Estado (PA)", GetType(String))
+        tablaDatos.Columns.Add("Cola (PA)", GetType(String))
+    End Sub
 End Class
