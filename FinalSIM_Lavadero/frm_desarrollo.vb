@@ -1,7 +1,7 @@
 ﻿Public Class frm_desarrollo
     'Inicializamos variables
     Dim listaAutos As New List(Of Automovil), listaAlfombras As New List(Of Alfombra), listaCarrocerias As New List(Of Carroceria)
-    Dim contadorAutos = 0
+    Dim contadorAutos = 0, contadorAutosBorrados = 0
     Dim evento As String
     Dim reloj = 0.0R
 
@@ -71,7 +71,7 @@
         crearTablaDatos()
         Show()
         Try
-            Do While (reloj < 200)
+            Do While (reloj < 500)
 
                 If (reloj = 0) Then 'primera iteracion
                     evento = "Inicio"
@@ -100,8 +100,8 @@
                     'Sumamos las columnas del auto, la alfombra y la carroceria
                     tablaDatos.Columns.Add("Estado Auto" & contadorAutos, GetType(String))
                     tablaDatos.Columns.Add("Tipo Auto" & contadorAutos, GetType(String))
-                    tablaDatos.Columns.Add("Estado Alf" & contadorAutos, GetType(String))
-                    tablaDatos.Columns.Add("Estado Car" & contadorAutos, GetType(String))
+                    tablaDatos.Columns.Add("Estado Alfombra" & contadorAutos, GetType(String))
+                    tablaDatos.Columns.Add("Estado Carroceria" & contadorAutos, GetType(String))
 
                     'otra llegada
                     determinarLlegadaAuto()
@@ -328,13 +328,13 @@
                     'Vamos a determinar si la alfombra del auto ya se aspiró (esperando carroceria) o no
                     For Each alfombra As Alfombra In listaAlfombras
                         If (alfombra.auto.num = espacioLavado1_carroceria.auto.num And alfombra.estado = "Esperando Carroceria") Then
-                            If (empPA_cola = 0) Then
+                            If (empPA_estado = "L") Then
                                 empPA_estado = "O"
                                 empPA_colaLista.Add(alfombra.auto)
                                 alfombra.estado = "Siendo PA"
                                 espacioLavado1_carroceria.estado = "Siendo PA"
                                 determinarFinPA()
-                            ElseIf (empPA_cola > 0) Then
+                            ElseIf (empPA_estado = "O") Then
                                 empPA_cola += 1
                                 empPA_colaLista.Add(alfombra.auto) 'tmb puede ser espaciolavado1_carroceria.auto ya que apuntan al mismo auto
                                 alfombra.estado = "Esperando PA"
@@ -399,13 +399,13 @@
                     'Vamos a determinar si la alfombra del auto ya se aspiró (esperando carroceria) o no
                     For Each alfombra As Alfombra In listaAlfombras
                         If (alfombra.auto.num = espacioLavado2_carroceria.auto.num And alfombra.estado = "Esperando Carroceria") Then
-                            If (empPA_cola = 0) Then
+                            If (empPA_estado = "L") Then
                                 empPA_estado = "O"
                                 empPA_colaLista.Add(alfombra.auto)
                                 alfombra.estado = "Siendo PA"
                                 espacioLavado2_carroceria.estado = "Siendo PA"
                                 determinarFinPA()
-                            ElseIf (empPA_cola > 0) Then
+                            ElseIf (empPA_estado = "O") Then
                                 empPA_cola += 1
                                 empPA_colaLista.Add(alfombra.auto) 'tmb puede ser espaciolavado2_carroceria.auto ya que apuntan al mismo
                                 alfombra.estado = "Esperando PA"
@@ -444,16 +444,16 @@
                 If (reloj = finPonerAlfombra_horaFin) Then
                     evento = "Fin PA"
                     'Eliminamos el auto, la alfombra y la carroceria del sistema
-                    empPA_colaLista.First.estado = "/////"
-                    empPA_colaLista.First.tipo = "/////"
+                    empPA_colaLista.First.estado = "FINALIZADO"
+                    empPA_colaLista.First.tipo = "FINALIZADO"
                     For Each alfombra As Alfombra In listaAlfombras
                         If (alfombra.auto.num = empPA_colaLista.First.num) Then
-                            alfombra.estado = "/////"
+                            alfombra.estado = "FINALIZADO"
                         End If
                     Next
                     For Each carroceria As Carroceria In listaCarrocerias
                         If (carroceria.auto.num = empPA_colaLista.First.num) Then
-                            carroceria.estado = "/////"
+                            carroceria.estado = "FINALIZADO"
                         End If
                     Next
                     empPA_colaLista.Remove(empPA_colaLista.First)
@@ -463,6 +463,16 @@
                         finPonerAlfombra_tiempo = -1.0R
                     ElseIf (empPA_cola > 0) Then
                         empPA_cola -= 1
+                        For Each alfombra As Alfombra In listaAlfombras
+                            If (alfombra.auto.num = empPA_colaLista.First.num) Then
+                                alfombra.estado = "Siendo PA"
+                            End If
+                        Next
+                        For Each carroceria As Carroceria In listaCarrocerias
+                            If (carroceria.auto.num = empPA_colaLista.First.num) Then
+                                carroceria.estado = "Siendo PA"
+                            End If
+                        Next
                         determinarFinPA()
                     End If
 
@@ -496,28 +506,66 @@
                 'sumar fila
                 Dim filaArray = New Object() {evento, reloj, llegadaAuto_RND, llegadaAuto_tiempoEntreLlegadas, llegadaAuto_horaLlegada, tipoAuto_RND, tipoAuto_tipo, finQuitarAlfombra_tiempo, finQuitarAlfombra_horaFin, finAspirado_RND, finAspirado_tiempoAspirado, finAspirado_horaFin, finLavado1_RND, finLavado1_tiempoLavado, finLavado1_horaFin, finLavado2_RND, finLavado2_tiempoLavado, finLavado2_horaFin, finSecado1_numK, finSecado1_tiempoSecado, finSecado1_horaFin, finSecado2_numK, finSecado2_tiempoSecado, finSecado2_horaFin, finPonerAlfombra_tiempo, finPonerAlfombra_horaFin, empQA_estado, empQA_cola, areaAspirado_estado, areaAspirado_cola, espacioLavado1_estado, espacioLavado2_estado, espaciosLavadoSecado_cola, secadora_estado, empPA_estado, empPA_cola}
                 Dim filaNueva As New ArrayList(filaArray)
-                'Dim contadorAutosBorrados = 0
+                Dim banderaHayQueBorrarAuto = -1
+                If (contadorAutosBorrados > 0) Then
+                    For i As Integer = 0 To (contadorAutosBorrados - 1)
+                        filaNueva.Add("")
+                        filaNueva.Add("")
+                        filaNueva.Add("")
+                        filaNueva.Add("")
+                    Next
+                End If
                 If (contadorAutos > 0) Then
-                    For i As Integer = 0 To (contadorAutos - 1)
-                        filaNueva.Add(listaAutos(i).estado)
-                        filaNueva.Add(listaAutos(i).tipo)
-                        If (listaAlfombras.Count > 0) Then
-                            For j As Integer = 0 To (listaAlfombras.Count - 1)
-                                If (listaAlfombras(j).auto.num = listaAutos(i).num) Then
-                                    filaNueva.Add(listaAlfombras(j).estado)
-                                    filaNueva.Add(listaCarrocerias(j).estado)
-                                End If
-                            Next
+                    For i As Integer = 0 To (contadorAutos - 1 - contadorAutosBorrados)
+                        If (listaAutos(i).estado <> "FINALIZADO") Then
+                            filaNueva.Add(listaAutos(i).estado)
+                            filaNueva.Add(listaAutos(i).tipo)
+                            If (listaAlfombras.Count > 0) Then
+                                For j As Integer = 0 To (listaAlfombras.Count - 1)
+                                    If (listaAlfombras(j).auto.num = listaAutos(i).num) Then
+                                        filaNueva.Add(listaAlfombras(j).estado)
+                                        filaNueva.Add(listaCarrocerias(j).estado)
+                                    End If
+                                Next
+                            End If
+                        Else
+                            filaNueva.Add("/////")
+                            filaNueva.Add("/////")
+                            filaNueva.Add("/////")
+                            filaNueva.Add("/////")
+                            banderaHayQueBorrarAuto = i
                         End If
                     Next
                 End If
+                'Borramos auto de la lista en caso que ya haya finalizado en la simulacion, y su alfombra y carroceria si corresponde
+                If (banderaHayQueBorrarAuto <> -1) Then
+                    contadorAutosBorrados += 1
+                    Dim banderaHayQueBorrarAlfombra = -1
+                    If (listaAlfombras.Count > 0) Then
+                        For j As Integer = 0 To (listaAlfombras.Count - 1)
+                            If (listaAlfombras(j).auto.num = listaAutos(banderaHayQueBorrarAuto).num) Then
+                                banderaHayQueBorrarAlfombra = j
+                            End If
+                        Next
+                    End If
+                    listaAutos.RemoveAt(banderaHayQueBorrarAuto)
+                    If (banderaHayQueBorrarAlfombra <> -1) Then
+                        listaAlfombras.RemoveAt(banderaHayQueBorrarAlfombra)
+                        listaCarrocerias.RemoveAt(banderaHayQueBorrarAlfombra)
+                    End If
+                End If
+
+                'sumamos ultima fila
                 tablaDatos.Rows.Add(CType(filaNueva.ToArray(GetType(Object)), Object()))
 
                 'calcular proximo evento
                 calcularProximoEvento()
             Loop
+
+            'Bindeamos el datatable con todos los datos a la grilla
             dgv_matriz.DataSource = tablaDatos
-            ' dgv_matriz.DataMember = "tablaDatos"
+            cambiarColorColumnas()
+            lbl_autos.Text = contadorAutos
         Catch ex As Exception
             Throw ex
             'Dim trace = New System.Diagnostics.StackTrace(ex, True)
@@ -527,7 +575,7 @@
     End Sub
 
     Private Sub determinarFinPA()
-        finPonerAlfombra_tiempo = 3.0R
+        finPonerAlfombra_tiempo = 3
         finPonerAlfombra_horaFin = reloj + finPonerAlfombra_tiempo
     End Sub
 
@@ -630,25 +678,33 @@
     End Sub
 
     Private Sub determinarFinAA()
+        'Do While (finAspirado_RND = -1 Or finAspirado_RND = 1)
         finAspirado_RND = Math.Round(random.NextDouble(), 2)
+        'Loop
         finAspirado_tiempoAspirado = finAspirado_RND * 2 + 3
         finAspirado_horaFin = Math.Round(reloj + finAspirado_tiempoAspirado, 2)
     End Sub
 
     Private Sub determinarFinLavado1()
+        'Do While (finLavado1_RND = -1 Or finLavado1_RND = 1)
         finLavado1_RND = Math.Round(random.NextDouble(), 2)
+        'Loop
         finLavado1_tiempoLavado = finLavado1_RND * 6 + 6
         finLavado1_horaFin = Math.Round(reloj + finLavado1_tiempoLavado, 2)
     End Sub
 
     Private Sub determinarFinLavado2()
+        'Do While (finLavado2_RND = -1 Or finLavado2_RND = 1)
         finLavado2_RND = Math.Round(random.NextDouble(), 2)
+        'Loop
         finLavado2_tiempoLavado = finLavado2_RND * 6 + 6
         finLavado2_horaFin = Math.Round(reloj + finLavado2_tiempoLavado, 2)
     End Sub
 
     Private Sub determinarLlegadaAuto()
+        'Do While (llegadaAuto_RND = -1 Or llegadaAuto_RND = 1)
         llegadaAuto_RND = Math.Round(random.NextDouble(), 2)
+        'Loop
         llegadaAuto_tiempoEntreLlegadas = Math.Round((-10 * Math.Log(1 - llegadaAuto_RND)), 2)
         llegadaAuto_horaLlegada = Math.Round(reloj + llegadaAuto_tiempoEntreLlegadas, 2)
     End Sub
@@ -659,7 +715,9 @@
     End Sub
 
     Private Sub determinarTipoAuto(auto As Automovil)
+        'Do While (llegadaAuto_RND = -1 Or tipoAuto_RND = 1)
         tipoAuto_RND = Math.Round(random.NextDouble(), 2)
+        'Loop
         If (tipoAuto_RND >= 0 And tipoAuto_RND <= 0.19) Then
             auto.tipo = "Pequeño"
             auto.numK = 0.75
@@ -673,68 +731,6 @@
         tipoAuto_tipo = auto.tipo
     End Sub
 
-    Private Sub determinarColumnaAuto()
-        If (contadorAutos > 0) Then
-            Dim nombreColumnaEstado = "estadoAuto" & contadorAutos.ToString
-            Dim nombreColumnaTipo = "tipoAuto" & contadorAutos.ToString
-            Dim banderaColumna = False
-            For j As Integer = 29 To (dgv_matriz.Columns.Count - 1)
-                If (dgv_matriz.Columns(j).Name = nombreColumnaEstado) Then
-                    banderaColumna = True
-                End If
-            Next
-            If (banderaColumna = False) Then 'No existe esa columna
-                dgv_matriz.Columns.Add(nombreColumnaEstado, "EstadoA" & contadorAutos)
-                dgv_matriz.Columns.Add(nombreColumnaTipo, "TipoA" & contadorAutos)
-            End If
-        End If
-    End Sub
-
-    Private Sub determinarColumnaAlfombra()
-        If (listaAlfombras.Count > 0) Then
-            Dim banderaExisteAlfombra = False
-            For Each alfombra As Alfombra In listaAlfombras
-                If (alfombra.auto.num = contadorAutos) Then
-                    banderaExisteAlfombra = True
-                End If
-            Next
-            If (banderaExisteAlfombra) Then
-                Dim nombreColumna = "estadoAlf" & listaAlfombras.Count
-                Dim banderaColumna = False
-                For j As Integer = 29 To dgv_matriz.Columns.Count - 1
-                    If (dgv_matriz.Columns(j).Name = nombreColumna) Then
-                        banderaColumna = True
-                    End If
-                Next
-                If (banderaColumna = False) Then 'No existe esa columna
-                    dgv_matriz.Columns.Add(nombreColumna, "EstadoAlf" & contadorAutos)
-                End If
-            End If
-        End If
-    End Sub
-
-    Private Sub determinarColumnaCarroceria()
-        If (listaCarrocerias.Count > 0) Then
-            Dim banderaExisteCarroceria = False
-            For Each carroceria As Carroceria In listaCarrocerias
-                If (carroceria.auto.num = contadorAutos) Then
-                    banderaExisteCarroceria = True
-                End If
-            Next
-            If (banderaExisteCarroceria) Then
-                Dim nombreColumna = "estadoCarr" & listaCarrocerias.Count
-                Dim banderaColumna = False
-                For j As Integer = 29 To dgv_matriz.Columns.Count - 1
-                    If (dgv_matriz.Columns(j).Name = nombreColumna) Then
-                        banderaColumna = True
-                    End If
-                Next
-                If (banderaColumna = False) Then 'No existe esa columna
-                    dgv_matriz.Columns.Add(nombreColumna, "EstadoCar" & contadorAutos)
-                End If
-            End If
-        End If
-    End Sub
 
     Private Sub calcularProximoEvento()
         Dim vectorTiemposEventos(7) As Double
@@ -776,10 +772,10 @@
         tablaDatos.Columns.Add("RND(Tipo)", GetType(String))
         tablaDatos.Columns.Add("Tipo", GetType(String))
         tablaDatos.Columns.Add("T.(QA)", GetType(String))
-        tablaDatos.Columns.Add("H.Fin(QA)", GetType(String))
+        tablaDatos.Columns.Add("H. Fin(QA)", GetType(String))
         tablaDatos.Columns.Add("RND(AA)", GetType(String))
-        tablaDatos.Columns.Add("T.Aspirado(AA)", GetType(String))
-        tablaDatos.Columns.Add("H.Fin Aspirado(AA)", GetType(String))
+        tablaDatos.Columns.Add("T.Aspirado (AA)", GetType(String))
+        tablaDatos.Columns.Add("H. Fin Aspirado(AA)", GetType(String))
         tablaDatos.Columns.Add("RND(FL1)", GetType(String))
         tablaDatos.Columns.Add("T. Lavado(FL1)", GetType(String))
         tablaDatos.Columns.Add("H. Fin Lavado(FL1)", GetType(String))
@@ -805,4 +801,16 @@
         tablaDatos.Columns.Add("Estado (PA)", GetType(String))
         tablaDatos.Columns.Add("Cola (PA)", GetType(String))
     End Sub
+
+    Private Sub cambiarColorColumnas()
+        dgv_matriz.Columns(4).DefaultCellStyle.BackColor = Color.LightBlue
+        dgv_matriz.Columns(8).DefaultCellStyle.BackColor = Color.LightBlue
+        dgv_matriz.Columns(11).DefaultCellStyle.BackColor = Color.LightBlue
+        dgv_matriz.Columns(14).DefaultCellStyle.BackColor = Color.LightBlue
+        dgv_matriz.Columns(17).DefaultCellStyle.BackColor = Color.LightBlue
+        dgv_matriz.Columns(20).DefaultCellStyle.BackColor = Color.LightBlue
+        dgv_matriz.Columns(23).DefaultCellStyle.BackColor = Color.LightBlue
+        dgv_matriz.Columns(25).DefaultCellStyle.BackColor = Color.LightBlue
+    End Sub
+
 End Class
