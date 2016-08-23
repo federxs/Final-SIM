@@ -22,8 +22,8 @@ Partial Class frm_desarrollo
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.lbl_tiempoSim = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -35,6 +35,8 @@ Partial Class frm_desarrollo
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.lbl_autos = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.lbl_relojCeldaSelec = New System.Windows.Forms.Label()
         CType(Me.dgv_matriz, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
@@ -74,23 +76,23 @@ Partial Class frm_desarrollo
         Me.dgv_matriz.AllowUserToAddRows = False
         Me.dgv_matriz.AllowUserToDeleteRows = False
         Me.dgv_matriz.AllowUserToResizeRows = False
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgv_matriz.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgv_matriz.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgv_matriz.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgv_matriz.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgv_matriz.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgv_matriz.Location = New System.Drawing.Point(12, 43)
         Me.dgv_matriz.Name = "dgv_matriz"
         Me.dgv_matriz.ReadOnly = True
@@ -150,7 +152,7 @@ Partial Class frm_desarrollo
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Lucida Sans Unicode", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(29, 791)
+        Me.Label7.Location = New System.Drawing.Point(29, 867)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(353, 20)
         Me.Label7.TabIndex = 9
@@ -160,16 +162,37 @@ Partial Class frm_desarrollo
         '
         Me.lbl_autos.AutoSize = True
         Me.lbl_autos.Font = New System.Drawing.Font("Lucida Sans Unicode", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbl_autos.Location = New System.Drawing.Point(388, 791)
+        Me.lbl_autos.Location = New System.Drawing.Point(388, 867)
         Me.lbl_autos.Name = "lbl_autos"
         Me.lbl_autos.Size = New System.Drawing.Size(0, 20)
         Me.lbl_autos.TabIndex = 10
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(97, 783)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(198, 16)
+        Me.Label8.TabIndex = 11
+        Me.Label8.Text = "Reloj de la celda seleccionada:"
+        '
+        'lbl_relojCeldaSelec
+        '
+        Me.lbl_relojCeldaSelec.AutoSize = True
+        Me.lbl_relojCeldaSelec.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbl_relojCeldaSelec.Location = New System.Drawing.Point(301, 783)
+        Me.lbl_relojCeldaSelec.Name = "lbl_relojCeldaSelec"
+        Me.lbl_relojCeldaSelec.Size = New System.Drawing.Size(0, 16)
+        Me.lbl_relojCeldaSelec.TabIndex = 12
         '
         'frm_desarrollo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1264, 962)
+        Me.Controls.Add(Me.lbl_relojCeldaSelec)
+        Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.lbl_autos)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.Label6)
@@ -198,4 +221,6 @@ Partial Class frm_desarrollo
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents lbl_autos As System.Windows.Forms.Label
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents lbl_relojCeldaSelec As System.Windows.Forms.Label
 End Class
