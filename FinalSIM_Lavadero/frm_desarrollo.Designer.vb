@@ -44,30 +44,30 @@ Partial Class frm_desarrollo
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Lucida Sans", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Lucida Sans Unicode", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(3, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(186, 18)
+        Me.Label1.Size = New System.Drawing.Size(194, 20)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Tiempo de simulación: "
         '
         'lbl_tiempoSim
         '
         Me.lbl_tiempoSim.AutoSize = True
-        Me.lbl_tiempoSim.Font = New System.Drawing.Font("Lucida Sans", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbl_tiempoSim.Location = New System.Drawing.Point(195, 0)
+        Me.lbl_tiempoSim.Font = New System.Drawing.Font("Lucida Sans Unicode", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbl_tiempoSim.Location = New System.Drawing.Point(203, 0)
         Me.lbl_tiempoSim.Name = "lbl_tiempoSim"
-        Me.lbl_tiempoSim.Size = New System.Drawing.Size(60, 18)
+        Me.lbl_tiempoSim.Size = New System.Drawing.Size(62, 20)
         Me.lbl_tiempoSim.TabIndex = 1
         Me.lbl_tiempoSim.Text = "Label2"
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Lucida Sans", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(261, 0)
+        Me.Label2.Font = New System.Drawing.Font("Lucida Sans Unicode", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(271, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(67, 18)
+        Me.Label2.Size = New System.Drawing.Size(73, 20)
         Me.Label2.TabIndex = 2
         Me.Label2.Text = "minutos"
         '
