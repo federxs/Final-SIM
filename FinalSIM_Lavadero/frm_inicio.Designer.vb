@@ -174,6 +174,7 @@ Partial Class frm_inicio
         '
         'frm_inicio
         '
+        Me.AcceptButton = Me.btn_aceptar
         Me.AutoScaleDimensions = New System.Drawing.SizeF(10.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(505, 447)

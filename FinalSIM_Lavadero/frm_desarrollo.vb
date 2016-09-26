@@ -6,38 +6,38 @@
     Dim reloj = 0.0R
     Dim tiempoSimulacion As Double, tiempoDesde As Double, tiempoHasta As Double
 
-    Dim llegadaAuto_RND = -1.0R
-    Dim llegadaAuto_tiempoEntreLlegadas = -1.0R
-    Dim llegadaAuto_horaLlegada = -1.0R
+    Dim llegadaAuto_RND = -1.0
+    Dim llegadaAuto_tiempoEntreLlegadas = -1.0
+    Dim llegadaAuto_horaLlegada = -1.0
 
-    Dim tipoAuto_RND = -1.0R
-    Dim tipoAuto_tipo = -1.0R
+    Dim tipoAuto_RND = -1.0
+    Dim tipoAuto_tipo = -1.0
 
-    Dim finQuitarAlfombra_tiempo = -1.0R 'es 2 min
-    Dim finQuitarAlfombra_horaFin = -1.0R
+    Dim finQuitarAlfombra_tiempo = -1.0 'es 2 min
+    Dim finQuitarAlfombra_horaFin = -1.0
 
-    Dim finLavado1_RND = -1.0R
-    Dim finLavado1_tiempoLavado = -1.0R
-    Dim finLavado1_horaFin = -1.0R
+    Dim finLavado1_RND = -1.0
+    Dim finLavado1_tiempoLavado = -1.0
+    Dim finLavado1_horaFin = -1.0
 
-    Dim finLavado2_RND = -1.0R
-    Dim finLavado2_tiempoLavado = -1.0R
-    Dim finLavado2_horaFin = -1.0R
+    Dim finLavado2_RND = -1.0
+    Dim finLavado2_tiempoLavado = -1.0
+    Dim finLavado2_horaFin = -1.0
 
-    Dim finSecado1_numK = -1.0R
-    Dim finSecado1_tiempoSecado = -1.0R
-    Dim finSecado1_horaFin = -1.0R
+    Dim finSecado1_numK = -1.0
+    Dim finSecado1_tiempoSecado = -1.0
+    Dim finSecado1_horaFin = -1.0
 
-    Dim finSecado2_numK = -1.0R
-    Dim finSecado2_tiempoSecado = -1.0R
-    Dim finSecado2_horaFin = -1.0R
+    Dim finSecado2_numK = -1.0
+    Dim finSecado2_tiempoSecado = -1.0
+    Dim finSecado2_horaFin = -1.0
 
-    Dim finAspirado_RND = -1.0R
-    Dim finAspirado_tiempoAspirado = -1.0R
-    Dim finAspirado_horaFin = -1.0R
+    Dim finAspirado_RND = -1.0
+    Dim finAspirado_tiempoAspirado = -1.0
+    Dim finAspirado_horaFin = -1.0
 
-    Dim finPonerAlfombra_tiempo = -1.0R 'es 3 min
-    Dim finPonerAlfombra_horaFin = -1.0R
+    Dim finPonerAlfombra_tiempo = -1.0 'es 3 min
+    Dim finPonerAlfombra_horaFin = -1.0
 
     Dim empQA_estado = "L"
     Dim empQA_cola = 0.0R
@@ -134,8 +134,8 @@
                     If (empQA_cola = 0) Then
                         empQA_estado = "L"
                         empQA_colaLista.Remove(empQA_colaLista.First())
-                        finQuitarAlfombra_horaFin = -1.0R
-                        finQuitarAlfombra_tiempo = -1.0R
+                        finQuitarAlfombra_horaFin = -1.0
+                        finQuitarAlfombra_tiempo = -1.0
                     ElseIf (empQA_cola > 0) Then
                         empQA_colaLista.Remove(empQA_colaLista.First())
                         empQA_cola -= 1
@@ -229,9 +229,9 @@
                     If (areaAspirado_cola = 0) Then
                         areaAspirado_estado = "L"
                         areaAspirado_listaCola.Remove(areaAspirado_listaCola.First)
-                        finAspirado_horaFin = -1.0R
-                        finAspirado_RND = -1.0R
-                        finAspirado_tiempoAspirado = -1.0R
+                        finAspirado_horaFin = -1.0
+                        finAspirado_RND = -1.0
+                        finAspirado_tiempoAspirado = -1.0
                     ElseIf (areaAspirado_cola > 0) Then
                         areaAspirado_cola -= 1
                         areaAspirado_listaCola.Remove(areaAspirado_listaCola.First)
@@ -375,9 +375,9 @@
                     finQuitarAlfombra_tiempo = -1
                     finLavado2_RND = -1
                     finLavado2_tiempoLavado = -1
-                    finSecado1_numK = -1.0R
-                    finSecado1_tiempoSecado = -1.0R
-                    finSecado1_horaFin = -1.0R
+                    finSecado1_numK = -1.0
+                    finSecado1_tiempoSecado = -1.0
+                    finSecado1_horaFin = -1.0
                     finAspirado_RND = -1
                     finAspirado_tiempoAspirado = -1
                 End If
@@ -448,9 +448,9 @@
                     finQuitarAlfombra_tiempo = -1
                     finLavado1_RND = -1
                     finLavado1_tiempoLavado = -1
-                    finSecado2_numK = -1.0R
-                    finSecado2_tiempoSecado = -1.0R
-                    finSecado2_horaFin = -1.0R
+                    finSecado2_numK = -1.0
+                    finSecado2_tiempoSecado = -1.0
+                    finSecado2_horaFin = -1.0
                     finAspirado_RND = -1
                     finAspirado_tiempoAspirado = -1
                 End If
@@ -480,8 +480,8 @@
                     empPA_colaLista.Remove(empPA_colaLista.First)
                     If (empPA_cola = 0) Then
                         empPA_estado = "L"
-                        finPonerAlfombra_horaFin = -1.0R
-                        finPonerAlfombra_tiempo = -1.0R
+                        finPonerAlfombra_horaFin = -1.0
+                        finPonerAlfombra_tiempo = -1.0
                     ElseIf (empPA_cola > 0) Then
                         empPA_cola -= 1
                         For Each alfombra As Alfombra In listaAlfombras
@@ -508,14 +508,14 @@
                     finLavado2_RND = -1
                     finLavado2_tiempoLavado = -1
                     finSecado1_numK = -1
-                    finSecado2_numK = -1.0R
+                    finSecado2_numK = -1.0
                     finAspirado_RND = -1
                     finAspirado_tiempoAspirado = -1
                 End If
 
-                    '--FIN ENTRADAS AL SISTEMA. COMIENZAN LAS OPERACIONES CON LA MATRIZ--
+                '--FIN ENTRADAS AL SISTEMA. COMIENZAN LAS OPERACIONES CON LA MATRIZ--
 
-                    'Sumamos filas dentro del intervalo al Datatable
+                'Sumamos filas dentro del intervalo al Datatable
                 If (reloj >= tiempoDesde And reloj <= tiempoHasta) Then
                     Dim filaArray = New Object() {evento, reloj, llegadaAuto_RND, llegadaAuto_tiempoEntreLlegadas, llegadaAuto_horaLlegada, tipoAuto_RND, tipoAuto_tipo, finQuitarAlfombra_tiempo, finQuitarAlfombra_horaFin, finAspirado_RND, finAspirado_tiempoAspirado, finAspirado_horaFin, finLavado1_RND, finLavado1_tiempoLavado, finLavado1_horaFin, finLavado2_RND, finLavado2_tiempoLavado, finLavado2_horaFin, finSecado1_numK, finSecado1_tiempoSecado, finSecado1_horaFin, finSecado2_numK, finSecado2_tiempoSecado, finSecado2_horaFin, finPonerAlfombra_tiempo, finPonerAlfombra_horaFin, empQA_estado, empQA_cola, areaAspirado_estado, areaAspirado_cola, espacioLavado1_estado, espacioLavado2_estado, espaciosLavadoSecado_cola, secadora_estado, empPA_estado, empPA_cola, acu_tiempoAtencion}
                     Dim filaNueva As New ArrayList(filaArray)
@@ -572,8 +572,8 @@
                     tablaDatos.Rows.Add(CType(filaNueva.ToArray(GetType(Object)), Object()))
                 End If
 
-                    'calcular proximo evento
-                    calcularProximoEvento()
+                'calcular proximo evento
+                calcularProximoEvento()
             Loop
 
             'Bindeamos el datatable con todos los datos a la grilla
