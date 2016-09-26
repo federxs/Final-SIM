@@ -45,6 +45,9 @@
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icono.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -73,6 +76,18 @@
     <Compile Include="Clases\Alfombra.vb" />
     <Compile Include="Clases\Automovil.vb" />
     <Compile Include="Clases\Carroceria.vb" />
+    <Compile Include="frm_abreviaciones.Designer.vb">
+      <DependentUpon>frm_abreviaciones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frm_abreviaciones.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frm_consigna.Designer.vb">
+      <DependentUpon>frm_consigna.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frm_consigna.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frm_desarrollo.Designer.vb">
       <DependentUpon>frm_desarrollo.vb</DependentUpon>
     </Compile>
@@ -103,6 +118,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frm_abreviaciones.resx">
+      <DependentUpon>frm_abreviaciones.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frm_consigna.resx">
+      <DependentUpon>frm_consigna.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frm_desarrollo.resx">
       <DependentUpon>frm_desarrollo.vb</DependentUpon>
     </EmbeddedResource>
@@ -127,6 +148,9 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icono.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

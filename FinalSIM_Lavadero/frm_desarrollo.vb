@@ -4,6 +4,7 @@
     Dim contadorAutos = 0, contadorAutosBorrados = 0
     Dim evento As String
     Dim reloj = 0.0R
+    Dim tiempoSimulacion As Double, tiempoDesde As Double, tiempoHasta As Double
 
     Dim llegadaAuto_RND = -1.0R
     Dim llegadaAuto_tiempoEntreLlegadas = -1.0R
@@ -59,6 +60,9 @@
     Dim empPA_cola = 0.0R
     Dim empPA_colaLista As New List(Of Automovil)
 
+    Dim acu_tiempoAtencion = 0.0R 'acumulador del tiempo que tarda un auto desde que llega hasta que se va
+    Dim pro_tiempoAtencion = 0.0R 'promedio del tiempo que tarda un auto desde que llega hasta que se va
+
     Dim random As New Random()
 
     Dim tablaDatos As New DataTable("tablaDatos")
@@ -69,9 +73,13 @@
         'Me.WindowState = FormWindowState.Maximized
         'Creamos el datatable con las columnas basicas
         crearTablaDatos()
+        tiempoSimulacion = frm_inicio.tiempoSimulacion
+        tiempoDesde = frm_inicio.tiempoDesde
+        tiempoHasta = frm_inicio.tiempoHasta
+        lbl_tiempoSim.Text = tiempoSimulacion
         Show()
         Try
-            Do While (reloj < 200)
+            Do While (reloj < tiempoSimulacion)
 
                 If (reloj = 0) Then 'primera iteracion
                     evento = "Inicio"
@@ -85,6 +93,7 @@
                     Dim autoNuevo As New Automovil()
                     determinarTipoAuto(autoNuevo)
                     autoNuevo.num = contadorAutos
+                    autoNuevo.tiempoLlegada = reloj
                     listaAutos.Add(autoNuevo)
                     If (empQA_estado = "L") Then
                         empQA_estado = "O"
@@ -226,6 +235,7 @@
                     ElseIf (areaAspirado_cola > 0) Then
                         areaAspirado_cola -= 1
                         areaAspirado_listaCola.Remove(areaAspirado_listaCola.First)
+                        areaAspirado_listaCola.First.estado = "Siendo AA"
                         determinarFinAA()
                     End If
 
@@ -460,6 +470,13 @@
                             carroceria.estado = "FINALIZADO"
                         End If
                     Next
+                    'Estadistica de tiempo de atencion promedio
+                    acu_tiempoAtencion += (reloj - empPA_colaLista.First.tiempoLlegada)
+                    If (contadorAutosBorrados <> 0) Then
+                        pro_tiempoAtencion = acu_tiempoAtencion / contadorAutosBorrados
+                    Else
+                        pro_tiempoAtencion = acu_tiempoAtencion
+                    End If
                     empPA_colaLista.Remove(empPA_colaLista.First)
                     If (empPA_cola = 0) Then
                         empPA_estado = "L"
@@ -496,19 +513,11 @@
                     finAspirado_tiempoAspirado = -1
                 End If
 
-                '--FIN ENTRADAS AL SISTEMA. COMIENZAN LAS OPERACIONES CON LA MATRIZ--
+                    '--FIN ENTRADAS AL SISTEMA. COMIENZAN LAS OPERACIONES CON LA MATRIZ--
 
-                'Sumamos primera fila al Datatable
-                If (reloj = 0) Then
-                    Dim filaArray1 = New Object() {evento, reloj, llegadaAuto_RND, llegadaAuto_tiempoEntreLlegadas, llegadaAuto_horaLlegada, tipoAuto_RND, tipoAuto_tipo, finQuitarAlfombra_tiempo, finQuitarAlfombra_horaFin, finAspirado_RND, finAspirado_tiempoAspirado, finAspirado_horaFin, finLavado1_RND, finLavado1_tiempoLavado, finLavado1_horaFin, finLavado2_RND, finLavado2_tiempoLavado, finLavado2_horaFin, finSecado1_numK, finSecado1_tiempoSecado, finSecado1_horaFin, finSecado2_numK, finSecado2_tiempoSecado, finSecado2_horaFin, finPonerAlfombra_tiempo, finPonerAlfombra_horaFin, empQA_estado, empQA_cola, areaAspirado_estado, areaAspirado_cola, espacioLavado1_estado, espacioLavado2_estado, espaciosLavadoSecado_cola, secadora_estado, empPA_estado, empPA_cola}
-                    Dim filaNueva1 As New ArrayList(filaArray1)
-                    tablaDatos.Rows.Add(filaArray1)
-                    tablaDatos.Rows.Add(New Object() {"-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----", "-----"})
-                End If
-
-                'Sumamos filas dentro del intervalo al Datatable
-                If (reloj > 0 And reloj < 100) Then
-                    Dim filaArray = New Object() {evento, reloj, llegadaAuto_RND, llegadaAuto_tiempoEntreLlegadas, llegadaAuto_horaLlegada, tipoAuto_RND, tipoAuto_tipo, finQuitarAlfombra_tiempo, finQuitarAlfombra_horaFin, finAspirado_RND, finAspirado_tiempoAspirado, finAspirado_horaFin, finLavado1_RND, finLavado1_tiempoLavado, finLavado1_horaFin, finLavado2_RND, finLavado2_tiempoLavado, finLavado2_horaFin, finSecado1_numK, finSecado1_tiempoSecado, finSecado1_horaFin, finSecado2_numK, finSecado2_tiempoSecado, finSecado2_horaFin, finPonerAlfombra_tiempo, finPonerAlfombra_horaFin, empQA_estado, empQA_cola, areaAspirado_estado, areaAspirado_cola, espacioLavado1_estado, espacioLavado2_estado, espaciosLavadoSecado_cola, secadora_estado, empPA_estado, empPA_cola}
+                    'Sumamos filas dentro del intervalo al Datatable
+                If (reloj >= tiempoDesde And reloj <= tiempoHasta) Then
+                    Dim filaArray = New Object() {evento, reloj, llegadaAuto_RND, llegadaAuto_tiempoEntreLlegadas, llegadaAuto_horaLlegada, tipoAuto_RND, tipoAuto_tipo, finQuitarAlfombra_tiempo, finQuitarAlfombra_horaFin, finAspirado_RND, finAspirado_tiempoAspirado, finAspirado_horaFin, finLavado1_RND, finLavado1_tiempoLavado, finLavado1_horaFin, finLavado2_RND, finLavado2_tiempoLavado, finLavado2_horaFin, finSecado1_numK, finSecado1_tiempoSecado, finSecado1_horaFin, finSecado2_numK, finSecado2_tiempoSecado, finSecado2_horaFin, finPonerAlfombra_tiempo, finPonerAlfombra_horaFin, empQA_estado, empQA_cola, areaAspirado_estado, areaAspirado_cola, espacioLavado1_estado, espacioLavado2_estado, espaciosLavadoSecado_cola, secadora_estado, empPA_estado, empPA_cola, acu_tiempoAtencion}
                     Dim filaNueva As New ArrayList(filaArray)
                     Dim banderaHayQueBorrarAuto = -1
                     If (contadorAutosBorrados > 0) Then
@@ -563,14 +572,15 @@
                     tablaDatos.Rows.Add(CType(filaNueva.ToArray(GetType(Object)), Object()))
                 End If
 
-                'calcular proximo evento
-                calcularProximoEvento()
+                    'calcular proximo evento
+                    calcularProximoEvento()
             Loop
 
             'Bindeamos el datatable con todos los datos a la grilla
             dgv_matriz.DataSource = tablaDatos
             cambiarColorColumnas()
-            lbl_autos.Text = contadorAutos
+            lbl_autos.Text = contadorAutosBorrados
+            lbl_promTiempoAtencion.Text = Math.Round(pro_tiempoAtencion, 2)
         Catch ex As Exception
             Throw ex
             'Dim trace = New System.Diagnostics.StackTrace(ex, True)
@@ -768,7 +778,7 @@
     End Sub
 
     Public Sub crearTablaDatos()
-        'son 36 columnas las basicas
+        'son 37 columnas las basicas
         tablaDatos.Columns.Add("Evento", GetType(String))
         tablaDatos.Columns.Add("Tiempo Sistema", GetType(String))
         tablaDatos.Columns.Add("RND(LA)", GetType(String))
@@ -805,6 +815,7 @@
         tablaDatos.Columns.Add("Estado (S)", GetType(String))
         tablaDatos.Columns.Add("Estado (PA)", GetType(String))
         tablaDatos.Columns.Add("Cola (PA)", GetType(String))
+        tablaDatos.Columns.Add("Acu T. Atencion", GetType(String))
     End Sub
 
     Private Sub cambiarColorColumnas()
@@ -822,7 +833,11 @@
     Private Sub dgv_matriz_SelectionChanged(sender As Object, e As EventArgs) Handles dgv_matriz.SelectionChanged
         If (dgv_matriz.SelectedCells.Count <> 0) Then
             lbl_relojCeldaSelec.Text = dgv_matriz.Rows((dgv_matriz.SelectedCells(0).RowIndex)).Cells(1).Value
+            lbl_eventoCelSelec.Text = dgv_matriz.Rows((dgv_matriz.SelectedCells(0).RowIndex)).Cells(0).Value
         End If
+    End Sub
 
+    Private Sub bnt_abreviaciones_Click(sender As Object, e As EventArgs) Handles bnt_abreviaciones.Click
+        frm_abreviaciones.Show()
     End Sub
 End Class

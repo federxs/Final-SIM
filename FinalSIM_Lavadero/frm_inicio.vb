@@ -1,9 +1,11 @@
 ﻿Public Class frm_inicio
-    Public tiempoSimulacion As Double
+    Public tiempoSimulacion As Double, tiempoDesde As Double, tiempoHasta As Double
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btn_aceptar.Click
         If (datosValidos()) Then
-            tiempoSimulacion = txt_tiempoSim.Text
+            tiempoSimulacion = Convert.ToDouble(txt_tiempoSim.Text)
+            tiempoHasta = Convert.ToDouble(txt_hasta.Text)
+            tiempoDesde = Convert.ToDouble(txt_desde.Text)
             frm_desarrollo.Show()
         End If
     End Sub
@@ -49,7 +51,6 @@
     End Sub
 
     Private Function datosValidos() As Boolean
-
         Dim mensajes As String = ""
         If txt_tiempoSim.Text = "" Then
             mensajes += "El tiempo de simulación no puede estar vacío"
@@ -60,18 +61,15 @@
         If txt_hasta.Text = "" Then
             mensajes += vbCrLf + "El tiempo 'hasta' no puede estar vacío"
         End If
-        If (txt_desde.Text <> "" And txt_hasta.Text <> "") Then
+        If (txt_desde.Text <> "" And txt_hasta.Text <> "" And txt_tiempoSim.Text <> "") Then
             If (Convert.ToDouble(txt_desde.Text) >= Convert.ToDouble(txt_hasta.Text)) Then
                 mensajes += vbCrLf + "El tiempo 'desde' debe ser menor al tiempo 'hasta'"
             End If
-        End If
-        If (txt_hasta.Text <> "" And txt_desde.Text <> "" And txt_tiempoSim.Text <> "") Then
-            Dim hasta = Convert.ToDouble(txt_hasta.Text)
-            Dim desde = Convert.ToDouble(txt_desde.Text)
-            If ((hasta - desde) > Convert.ToDouble(txt_tiempoSim.Text)) Then
-                mensajes += vbCrLf + "El intervalo no puede ser mayor al tiempo de simulación"
+            If (txt_hasta.Text > txt_tiempoSim.Text) Then
+                mensajes += vbCrLf + "El tiempo 'hasta' debe ser menor al tiempo de simulación"
             End If
         End If
+
         If mensajes = "" Then
             lbl_mensajes.Text = ""
             Return True

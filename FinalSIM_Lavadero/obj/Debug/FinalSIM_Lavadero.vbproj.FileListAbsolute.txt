@@ -20,3 +20,5 @@ D:\Facultad\4º AÑO\SIM\Final SIM\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero
 D:\Facultad\4º AÑO\SIM\Final SIM\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.exe
 D:\Facultad\4º AÑO\SIM\Final SIM\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.xml
 D:\Facultad\4º AÑO\SIM\Final SIM\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.pdb
+D:\Facultad\4º AÑO\SIM\Final SIM\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.frm_consigna.resources
+D:\Facultad\4º AÑO\SIM\Final SIM\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.frm_abreviaciones.resources
