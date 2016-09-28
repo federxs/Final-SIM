@@ -12,11 +12,17 @@
 
     Private Sub txt_tiempoSim_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txt_tiempoSim.KeyPress
         If e.KeyChar <> ControlChars.Back Then
-            e.Handled = Not (Char.IsDigit(e.KeyChar) Or e.KeyChar = ".")
+            e.Handled = Not (Char.IsDigit(e.KeyChar) Or e.KeyChar = ",")
         End If
-        If (e.KeyChar = ".") Then
+        If (txt_tiempoSim.Text.Length <> 0 And txt_tiempoSim.Text.Contains(","c)) Then
+            Dim split As String() = txt_tiempoSim.Text.Split(","c)
+            If (split(1).Length >= 4 And (Char.IsDigit(e.KeyChar) Or e.KeyChar = ",")) Then
+                e.Handled = True
+            End If
+        End If
+        If (e.KeyChar = ",") Then
             For Each letter As Char In txt_tiempoSim.Text
-                If (letter = ".") Then
+                If (letter = ",") Then
                     e.Handled = True
                 End If
             Next
@@ -25,11 +31,17 @@
 
     Private Sub txt_desde_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txt_desde.KeyPress
         If e.KeyChar <> ControlChars.Back Then
-            e.Handled = Not (Char.IsDigit(e.KeyChar) Or e.KeyChar = ".")
+            e.Handled = Not (Char.IsDigit(e.KeyChar) Or e.KeyChar = ",")
         End If
-        If (e.KeyChar = ".") Then
+        If (txt_desde.Text.Length <> 0 And txt_desde.Text.Contains(","c)) Then
+            Dim split As String() = txt_desde.Text.Split(","c)
+            If (split(1).Length >= 4 And (Char.IsDigit(e.KeyChar) Or e.KeyChar = ",")) Then
+                e.Handled = True
+            End If
+        End If
+        If (e.KeyChar = ",") Then
             For Each letter As Char In txt_desde.Text
-                If (letter = ".") Then
+                If (letter = ",") Then
                     e.Handled = True
                 End If
             Next
@@ -39,11 +51,17 @@
 
     Private Sub txt_hasta_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txt_hasta.KeyPress
         If e.KeyChar <> ControlChars.Back Then
-            e.Handled = Not (Char.IsDigit(e.KeyChar) Or e.KeyChar = ".")
+            e.Handled = Not (Char.IsDigit(e.KeyChar) Or e.KeyChar = ",")
         End If
-        If (e.KeyChar = ".") Then
+        If (txt_hasta.Text.Length <> 0 And txt_hasta.Text.Contains(","c)) Then
+            Dim split As String() = txt_hasta.Text.Split(","c)
+            If (split(1).Length >= 4 And (Char.IsDigit(e.KeyChar) Or e.KeyChar = ",")) Then
+                e.Handled = True
+            End If
+        End If
+        If (e.KeyChar = ",") Then
             For Each letter As Char In txt_hasta.Text
-                If (letter = ".") Then
+                If (letter = ",") Then
                     e.Handled = True
                 End If
             Next
@@ -65,7 +83,7 @@
             If (Convert.ToDouble(txt_desde.Text) >= Convert.ToDouble(txt_hasta.Text)) Then
                 mensajes += vbCrLf + "El tiempo 'desde' debe ser menor al tiempo 'hasta'"
             End If
-            If (txt_hasta.Text > txt_tiempoSim.Text) Then
+            If (Convert.ToDouble(txt_hasta.Text) > Convert.ToDouble(txt_tiempoSim.Text)) Then
                 mensajes += vbCrLf + "El tiempo 'hasta' debe ser menor al tiempo de simulación"
             End If
         End If
@@ -78,5 +96,9 @@
         End If
         Return False
     End Function
+
+    Private Sub btn_consigna_Click(sender As Object, e As EventArgs) Handles btn_consigna.Click
+        frm_consigna.Show()
+    End Sub
 
 End Class

@@ -194,6 +194,7 @@ Partial Class frm_inicio
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(5)
         Me.Name = "frm_inicio"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Simulacion Lavadero - Inicio"
         Me.group_mensajes.ResumeLayout(False)
         Me.group_mensajes.PerformLayout()

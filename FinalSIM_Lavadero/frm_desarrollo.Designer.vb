@@ -24,10 +24,10 @@ Partial Class frm_desarrollo
     Private Sub InitializeComponent()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frm_desarrollo))
         Me.Label1 = New System.Windows.Forms.Label()
         Me.lbl_tiempoSim = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
         Me.dgv_matriz = New System.Windows.Forms.DataGridView()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.Label7 = New System.Windows.Forms.Label()
@@ -35,6 +35,8 @@ Partial Class frm_desarrollo
         Me.Label8 = New System.Windows.Forms.Label()
         Me.lbl_relojCeldaSelec = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.lbl_porcUsoSecadora = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.lbl_promTiempoAtencion = New System.Windows.Forms.Label()
         Me.bnt_abreviaciones = New System.Windows.Forms.Button()
@@ -49,32 +51,22 @@ Partial Class frm_desarrollo
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Lucida Sans", 10.0!)
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!)
         Me.Label1.Location = New System.Drawing.Point(3, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(158, 16)
+        Me.Label1.Size = New System.Drawing.Size(153, 17)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Tiempo de simulación: "
         '
         'lbl_tiempoSim
         '
         Me.lbl_tiempoSim.AutoSize = True
-        Me.lbl_tiempoSim.Font = New System.Drawing.Font("Lucida Sans", 10.0!)
-        Me.lbl_tiempoSim.Location = New System.Drawing.Point(167, 0)
+        Me.lbl_tiempoSim.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!)
+        Me.lbl_tiempoSim.Location = New System.Drawing.Point(162, 0)
         Me.lbl_tiempoSim.Name = "lbl_tiempoSim"
-        Me.lbl_tiempoSim.Size = New System.Drawing.Size(39, 16)
+        Me.lbl_tiempoSim.Size = New System.Drawing.Size(38, 17)
         Me.lbl_tiempoSim.TabIndex = 1
         Me.lbl_tiempoSim.Text = "label"
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Lucida Sans", 10.0!)
-        Me.Label2.Location = New System.Drawing.Point(212, 0)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(59, 16)
-        Me.Label2.TabIndex = 2
-        Me.Label2.Text = "minutos"
         '
         'dgv_matriz
         '
@@ -101,6 +93,14 @@ Partial Class frm_desarrollo
         Me.dgv_matriz.Location = New System.Drawing.Point(12, 53)
         Me.dgv_matriz.Name = "dgv_matriz"
         Me.dgv_matriz.ReadOnly = True
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgv_matriz.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.dgv_matriz.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
         Me.dgv_matriz.Size = New System.Drawing.Size(1240, 725)
         Me.dgv_matriz.TabIndex = 3
@@ -109,10 +109,9 @@ Partial Class frm_desarrollo
         '
         Me.FlowLayoutPanel1.Controls.Add(Me.Label1)
         Me.FlowLayoutPanel1.Controls.Add(Me.lbl_tiempoSim)
-        Me.FlowLayoutPanel1.Controls.Add(Me.Label2)
         Me.FlowLayoutPanel1.Location = New System.Drawing.Point(450, 779)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(379, 25)
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(326, 25)
         Me.FlowLayoutPanel1.TabIndex = 6
         '
         'Label7
@@ -155,17 +154,38 @@ Partial Class frm_desarrollo
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.lbl_porcUsoSecadora)
+        Me.GroupBox1.Controls.Add(Me.Label5)
         Me.GroupBox1.Controls.Add(Me.Label9)
         Me.GroupBox1.Controls.Add(Me.lbl_promTiempoAtencion)
         Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.lbl_autos)
-        Me.GroupBox1.Font = New System.Drawing.Font("Lucida Sans", 12.0!)
+        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!)
         Me.GroupBox1.Location = New System.Drawing.Point(15, 838)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(528, 112)
         Me.GroupBox1.TabIndex = 13
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Estadísticas"
+        '
+        'lbl_porcUsoSecadora
+        '
+        Me.lbl_porcUsoSecadora.AutoSize = True
+        Me.lbl_porcUsoSecadora.Font = New System.Drawing.Font("Lucida Sans Unicode", 11.0!)
+        Me.lbl_porcUsoSecadora.Location = New System.Drawing.Point(248, 60)
+        Me.lbl_porcUsoSecadora.Name = "lbl_porcUsoSecadora"
+        Me.lbl_porcUsoSecadora.Size = New System.Drawing.Size(0, 18)
+        Me.lbl_porcUsoSecadora.TabIndex = 14
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Lucida Sans Unicode", 11.0!)
+        Me.Label5.Location = New System.Drawing.Point(6, 60)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(242, 18)
+        Me.Label5.TabIndex = 13
+        Me.Label5.Text = "Porcentaje de uso de secadora:"
         '
         'Label9
         '
@@ -189,7 +209,7 @@ Partial Class frm_desarrollo
         'bnt_abreviaciones
         '
         Me.bnt_abreviaciones.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.bnt_abreviaciones.Font = New System.Drawing.Font("Lucida Sans", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.bnt_abreviaciones.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.bnt_abreviaciones.Location = New System.Drawing.Point(1139, 784)
         Me.bnt_abreviaciones.Name = "bnt_abreviaciones"
         Me.bnt_abreviaciones.Size = New System.Drawing.Size(113, 25)
@@ -200,10 +220,10 @@ Partial Class frm_desarrollo
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Lucida Sans", 20.25!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Underline), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Underline), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(485, 9)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(172, 31)
+        Me.Label3.Size = New System.Drawing.Size(156, 31)
         Me.Label3.TabIndex = 15
         Me.Label3.Text = "Simulación"
         '
@@ -230,7 +250,8 @@ Partial Class frm_desarrollo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1264, 962)
+        Me.AutoScroll = True
+        Me.ClientSize = New System.Drawing.Size(1264, 882)
         Me.Controls.Add(Me.lbl_eventoCelSelec)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
@@ -254,7 +275,6 @@ Partial Class frm_desarrollo
     End Sub
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents lbl_tiempoSim As System.Windows.Forms.Label
-    Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents dgv_matriz As System.Windows.Forms.DataGridView
     Friend WithEvents FlowLayoutPanel1 As System.Windows.Forms.FlowLayoutPanel
     Friend WithEvents Label7 As System.Windows.Forms.Label
@@ -268,4 +288,6 @@ Partial Class frm_desarrollo
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents lbl_eventoCelSelec As System.Windows.Forms.Label
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents lbl_porcUsoSecadora As System.Windows.Forms.Label
 End Class

@@ -32,7 +32,7 @@ Partial Class frm_abreviaciones
         '
         'Label6
         '
-        Me.Label6.Font = New System.Drawing.Font("Lucida Sans", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.Location = New System.Drawing.Point(194, 50)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(108, 80)
@@ -41,7 +41,7 @@ Partial Class frm_abreviaciones
         '
         'Label5
         '
-        Me.Label5.Font = New System.Drawing.Font("Lucida Sans", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.Location = New System.Drawing.Point(46, 50)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(118, 80)
@@ -50,7 +50,7 @@ Partial Class frm_abreviaciones
         '
         'Label4
         '
-        Me.Label4.Font = New System.Drawing.Font("Lucida Sans", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.Location = New System.Drawing.Point(170, 50)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(27, 80)
@@ -60,7 +60,7 @@ Partial Class frm_abreviaciones
         '
         'Label3
         '
-        Me.Label3.Font = New System.Drawing.Font("Lucida Sans", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(18, 50)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(31, 80)
@@ -71,10 +71,10 @@ Partial Class frm_abreviaciones
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Lucida Sans", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(17, 9)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(266, 24)
+        Me.Label1.Size = New System.Drawing.Size(254, 25)
         Me.Label1.TabIndex = 13
         Me.Label1.Text = "Listado de Abreviaciones"
         '
@@ -90,7 +90,7 @@ Partial Class frm_abreviaciones
         Me.Controls.Add(Me.Label3)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "frm_abreviaciones"
-        Me.Text = "frm_abreviaciones"
+        Me.Text = "Abreviaciones"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

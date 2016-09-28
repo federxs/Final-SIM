@@ -22,3 +22,16 @@ D:\Facultad\4º AÑO\SIM\Final SIM\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero
 D:\Facultad\4º AÑO\SIM\Final SIM\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.pdb
 D:\Facultad\4º AÑO\SIM\Final SIM\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.frm_consigna.resources
 D:\Facultad\4º AÑO\SIM\Final SIM\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.frm_abreviaciones.resources
+D:\Final-SIM-master\FinalSIM_Lavadero\bin\Debug\FinalSIM_Lavadero.exe.config
+D:\Final-SIM-master\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.exe
+D:\Final-SIM-master\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.xml
+D:\Final-SIM-master\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.pdb
+D:\Final-SIM-master\FinalSIM_Lavadero\bin\Debug\FinalSIM_Lavadero.exe
+D:\Final-SIM-master\FinalSIM_Lavadero\bin\Debug\FinalSIM_Lavadero.pdb
+D:\Final-SIM-master\FinalSIM_Lavadero\bin\Debug\FinalSIM_Lavadero.xml
+D:\Final-SIM-master\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.frm_abreviaciones.resources
+D:\Final-SIM-master\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.frm_consigna.resources
+D:\Final-SIM-master\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.frm_desarrollo.resources
+D:\Final-SIM-master\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.frm_inicio.resources
+D:\Final-SIM-master\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.Resources.resources
+D:\Final-SIM-master\FinalSIM_Lavadero\obj\Debug\FinalSIM_Lavadero.vbproj.GenerateResource.Cache

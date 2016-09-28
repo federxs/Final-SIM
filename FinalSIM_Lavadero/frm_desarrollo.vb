@@ -40,28 +40,32 @@
     Dim finPonerAlfombra_horaFin = -1.0
 
     Dim empQA_estado = "L"
-    Dim empQA_cola = 0.0R
+    Dim empQA_cola = 0
     Dim empQA_colaLista As New List(Of Automovil)
 
     Dim areaAspirado_estado = "L"
-    Dim areaAspirado_cola = 0.0R
+    Dim areaAspirado_cola = 0
     Dim areaAspirado_listaCola As New List(Of Alfombra)
 
     Dim espacioLavado1_estado = "L"
     Dim espacioLavado1_carroceria As New Carroceria
     Dim espacioLavado2_estado = "L"
     Dim espacioLavado2_carroceria As New Carroceria
-    Dim espaciosLavadoSecado_cola = 0.0R
+    Dim espaciosLavadoSecado_cola = 0
     Dim espaciosLavadoSecado_colaLista As New List(Of Carroceria)
 
     Dim secadora_estado = "L"
 
     Dim empPA_estado = "L"
-    Dim empPA_cola = 0.0R
+    Dim empPA_cola = 0
     Dim empPA_colaLista As New List(Of Automovil)
 
-    Dim acu_tiempoAtencion = 0.0R 'acumulador del tiempo que tarda un auto desde que llega hasta que se va
-    Dim pro_tiempoAtencion = 0.0R 'promedio del tiempo que tarda un auto desde que llega hasta que se va
+    Dim acu_tiempoAtencion = 0 'acumulador del tiempo que tarda un auto desde que llega hasta que se va
+    Dim pro_tiempoAtencion = 0 'promedio del tiempo que tarda un auto desde que llega hasta que se va
+    Dim contador_autosBorrados = 0
+
+    Dim acu_tiempoSecadora = 0 'acumulador del tiempo que se utiliza la secadora
+    Dim pro_tiempoSecadora = 0 'promedio del tiempo que se utiliza la secadora
 
     Dim random As New Random()
 
@@ -76,7 +80,7 @@
         tiempoSimulacion = frm_inicio.tiempoSimulacion
         tiempoDesde = frm_inicio.tiempoDesde
         tiempoHasta = frm_inicio.tiempoHasta
-        lbl_tiempoSim.Text = tiempoSimulacion
+        lbl_tiempoSim.Text = tiempoSimulacion.ToString + " minutos"
         Show()
         Try
             Do While (reloj < tiempoSimulacion)
@@ -165,7 +169,7 @@
                     carroceriaNueva.auto = autoDesarmado
                     listaCarrocerias.Add(carroceriaNueva)
                     If (espacioLavado1_estado = "L" And espacioLavado2_estado = "L") Then 'Ambos EL libres, ocupamos uno aleatoriamente
-                        Dim numRandom = Math.Round(random.NextDouble(), 2)
+                        Dim numRandom = Math.Round(random.NextDouble(), 4)
                         If (numRandom <= 0.49) Then 'EL1 libre
                             espacioLavado1_estado = "O"
                             espacioLavado1_carroceria = carroceriaNueva
@@ -367,6 +371,9 @@
                         determinarFinLavado1()
                     End If
 
+                    'Hacemos estadistica del porcentaje de uso de secadora
+                    acu_tiempoSecadora += finSecado1_tiempoSecado
+
                     'blanqueamos campos
                     tipoAuto_RND = -1
                     tipoAuto_tipo = -1
@@ -440,6 +447,9 @@
                         determinarFinLavado2()
                     End If
 
+                    'Hacemos estadistica del porcentaje de uso de secadora
+                    acu_tiempoSecadora += finSecado2_tiempoSecado
+
                     'blanqueamos campos
                     tipoAuto_RND = -1
                     tipoAuto_tipo = -1
@@ -471,12 +481,9 @@
                         End If
                     Next
                     'Estadistica de tiempo de atencion promedio
-                    acu_tiempoAtencion += (reloj - empPA_colaLista.First.tiempoLlegada)
-                    If (contadorAutosBorrados <> 0) Then
-                        pro_tiempoAtencion = acu_tiempoAtencion / contadorAutosBorrados
-                    Else
-                        pro_tiempoAtencion = acu_tiempoAtencion
-                    End If
+                    acu_tiempoAtencion += Math.Round((reloj - empPA_colaLista.First.tiempoLlegada), 4)
+                    contador_autosBorrados += 1
+                    pro_tiempoAtencion = acu_tiempoAtencion / contador_autosBorrados
                     empPA_colaLista.Remove(empPA_colaLista.First)
                     If (empPA_cola = 0) Then
                         empPA_estado = "L"
@@ -516,59 +523,60 @@
                 '--FIN ENTRADAS AL SISTEMA. COMIENZAN LAS OPERACIONES CON LA MATRIZ--
 
                 'Sumamos filas dentro del intervalo al Datatable
-                If (reloj >= tiempoDesde And reloj <= tiempoHasta) Then
-                    Dim filaArray = New Object() {evento, reloj, llegadaAuto_RND, llegadaAuto_tiempoEntreLlegadas, llegadaAuto_horaLlegada, tipoAuto_RND, tipoAuto_tipo, finQuitarAlfombra_tiempo, finQuitarAlfombra_horaFin, finAspirado_RND, finAspirado_tiempoAspirado, finAspirado_horaFin, finLavado1_RND, finLavado1_tiempoLavado, finLavado1_horaFin, finLavado2_RND, finLavado2_tiempoLavado, finLavado2_horaFin, finSecado1_numK, finSecado1_tiempoSecado, finSecado1_horaFin, finSecado2_numK, finSecado2_tiempoSecado, finSecado2_horaFin, finPonerAlfombra_tiempo, finPonerAlfombra_horaFin, empQA_estado, empQA_cola, areaAspirado_estado, areaAspirado_cola, espacioLavado1_estado, espacioLavado2_estado, espaciosLavadoSecado_cola, secadora_estado, empPA_estado, empPA_cola, acu_tiempoAtencion}
-                    Dim filaNueva As New ArrayList(filaArray)
-                    Dim banderaHayQueBorrarAuto = -1
-                    If (contadorAutosBorrados > 0) Then
-                        For i As Integer = 0 To (contadorAutosBorrados - 1)
-                            filaNueva.Add("")
-                            filaNueva.Add("")
-                            filaNueva.Add("")
-                            filaNueva.Add("")
-                        Next
-                    End If
-                    If (contadorAutos > 0) Then
-                        For i As Integer = 0 To (contadorAutos - 1 - contadorAutosBorrados)
-                            If (listaAutos(i).estado <> "FINALIZADO") Then
-                                filaNueva.Add(listaAutos(i).estado)
-                                filaNueva.Add(listaAutos(i).tipo)
-                                If (listaAlfombras.Count > 0) Then
-                                    For j As Integer = 0 To (listaAlfombras.Count - 1)
-                                        If (listaAlfombras(j).auto.num = listaAutos(i).num) Then
-                                            filaNueva.Add(listaAlfombras(j).estado)
-                                            filaNueva.Add(listaCarrocerias(j).estado)
-                                        End If
-                                    Next
-                                End If
-                            Else
-                                filaNueva.Add("/////")
-                                filaNueva.Add("/////")
-                                filaNueva.Add("/////")
-                                filaNueva.Add("/////")
-                                banderaHayQueBorrarAuto = i
+
+                Dim filaArray = New Object() {evento, reloj, llegadaAuto_RND, llegadaAuto_tiempoEntreLlegadas, llegadaAuto_horaLlegada, tipoAuto_RND, tipoAuto_tipo, finQuitarAlfombra_tiempo, finQuitarAlfombra_horaFin, finAspirado_RND, finAspirado_tiempoAspirado, finAspirado_horaFin, finLavado1_RND, finLavado1_tiempoLavado, finLavado1_horaFin, finLavado2_RND, finLavado2_tiempoLavado, finLavado2_horaFin, finSecado1_numK, finSecado1_tiempoSecado, finSecado1_horaFin, finSecado2_numK, finSecado2_tiempoSecado, finSecado2_horaFin, finPonerAlfombra_tiempo, finPonerAlfombra_horaFin, empQA_estado, empQA_cola, areaAspirado_estado, areaAspirado_cola, espacioLavado1_estado, espacioLavado2_estado, espaciosLavadoSecado_cola, secadora_estado, empPA_estado, empPA_cola, acu_tiempoAtencion, acu_tiempoSecadora}
+                Dim filaNueva As New ArrayList(filaArray)
+                Dim banderaHayQueBorrarAuto = -1
+                If (contadorAutosBorrados > 0) Then
+                    For i As Integer = 0 To (contadorAutosBorrados - 1)
+                        filaNueva.Add("")
+                        filaNueva.Add("")
+                        filaNueva.Add("")
+                        filaNueva.Add("")
+                    Next
+                End If
+                If (contadorAutos > 0) Then
+                    For i As Integer = 0 To (contadorAutos - 1 - contadorAutosBorrados)
+                        If (listaAutos(i).estado <> "FINALIZADO") Then
+                            filaNueva.Add(listaAutos(i).estado)
+                            filaNueva.Add(listaAutos(i).tipo)
+                            If (listaAlfombras.Count > 0) Then
+                                For j As Integer = 0 To (listaAlfombras.Count - 1)
+                                    If (listaAlfombras(j).auto.num = listaAutos(i).num) Then
+                                        filaNueva.Add(listaAlfombras(j).estado)
+                                        filaNueva.Add(listaCarrocerias(j).estado)
+                                    End If
+                                Next
+                            End If
+                        Else
+                            filaNueva.Add("/////")
+                            filaNueva.Add("/////")
+                            filaNueva.Add("/////")
+                            filaNueva.Add("/////")
+                            banderaHayQueBorrarAuto = i
+                        End If
+                    Next
+                End If
+                'Borramos auto de la lista en caso que ya haya finalizado en la simulacion, y su alfombra y carroceria si corresponde
+                If (banderaHayQueBorrarAuto <> -1) Then
+                    contadorAutosBorrados += 1
+                    Dim banderaHayQueBorrarAlfombra = -1
+                    If (listaAlfombras.Count > 0) Then
+                        For j As Integer = 0 To (listaAlfombras.Count - 1)
+                            If (listaAlfombras(j).auto.num = listaAutos(banderaHayQueBorrarAuto).num) Then
+                                banderaHayQueBorrarAlfombra = j
                             End If
                         Next
                     End If
-                    'Borramos auto de la lista en caso que ya haya finalizado en la simulacion, y su alfombra y carroceria si corresponde
-                    If (banderaHayQueBorrarAuto <> -1) Then
-                        contadorAutosBorrados += 1
-                        Dim banderaHayQueBorrarAlfombra = -1
-                        If (listaAlfombras.Count > 0) Then
-                            For j As Integer = 0 To (listaAlfombras.Count - 1)
-                                If (listaAlfombras(j).auto.num = listaAutos(banderaHayQueBorrarAuto).num) Then
-                                    banderaHayQueBorrarAlfombra = j
-                                End If
-                            Next
-                        End If
-                        listaAutos.RemoveAt(banderaHayQueBorrarAuto)
-                        If (banderaHayQueBorrarAlfombra <> -1) Then
-                            listaAlfombras.RemoveAt(banderaHayQueBorrarAlfombra)
-                            listaCarrocerias.RemoveAt(banderaHayQueBorrarAlfombra)
-                        End If
+                    listaAutos.RemoveAt(banderaHayQueBorrarAuto)
+                    If (banderaHayQueBorrarAlfombra <> -1) Then
+                        listaAlfombras.RemoveAt(banderaHayQueBorrarAlfombra)
+                        listaCarrocerias.RemoveAt(banderaHayQueBorrarAlfombra)
                     End If
+                End If
 
-                    'sumamos ultima fila
+                'sumamos ultima fila
+                If (reloj >= tiempoDesde And reloj <= tiempoHasta) Then
                     tablaDatos.Rows.Add(CType(filaNueva.ToArray(GetType(Object)), Object()))
                 End If
 
@@ -580,7 +588,8 @@
             dgv_matriz.DataSource = tablaDatos
             cambiarColorColumnas()
             lbl_autos.Text = contadorAutosBorrados
-            lbl_promTiempoAtencion.Text = Math.Round(pro_tiempoAtencion, 2)
+            lbl_promTiempoAtencion.Text = Math.Round(pro_tiempoAtencion, 4).ToString + " minutos"
+            lbl_porcUsoSecadora.Text = Math.Round(acu_tiempoSecadora / tiempoSimulacion * 100, 4).ToString + "%"
         Catch ex As Exception
             Throw ex
             'Dim trace = New System.Diagnostics.StackTrace(ex, True)
@@ -599,7 +608,7 @@
         Dim humedadInicial As Double
         Dim tiempoSiguiente As Double
         Dim humedadSiguiente As Double
-        Dim h = 0.01R
+        Dim h = 0.0001R
 
         tiempoInicial = 0.0R
         humedadInicial = 100 'El auto se empezo a secar solo y luego se desocupa la secadora
@@ -617,7 +626,7 @@
         Dim humedadInicial As Double
         Dim tiempoSiguiente As Double
         Dim humedadSiguiente As Double
-        Dim h = 0.01R
+        Dim h = 0.0001R
 
         tiempoInicial = 0.0R
         humedadInicial = humedad
@@ -628,8 +637,8 @@
             humedadInicial = humedadSiguiente
         Loop
         finSecado1_numK = numK
-        finSecado1_tiempoSecado = Math.Round(tiempoInicial, 2)
-        finSecado1_horaFin = Math.Round(reloj + tiempoInicial, 2)
+        finSecado1_tiempoSecado = Math.Round(tiempoInicial, 4)
+        finSecado1_horaFin = Math.Round(reloj + tiempoInicial, 4)
     End Sub
 
     Private Sub determinarFinSecadoSolo1(humedad As Double, numK As Double)
@@ -637,7 +646,7 @@
         Dim humedadInicial As Double
         Dim tiempoSiguiente As Double
         Dim humedadSiguiente As Double
-        Dim h = 0.01R
+        Dim h = 0.0001R
 
         tiempoInicial = 0.0R
         humedadInicial = humedad
@@ -648,8 +657,8 @@
             humedadInicial = humedadSiguiente
         Loop
         finSecado1_numK = numK
-        finSecado1_tiempoSecado = Math.Round(tiempoInicial, 2)
-        finSecado1_horaFin = Math.Round(reloj + tiempoInicial, 2)
+        finSecado1_tiempoSecado = Math.Round(tiempoInicial, 4)
+        finSecado1_horaFin = Math.Round(reloj + tiempoInicial, 4)
     End Sub
 
     Private Sub determinarFinSecadoMaquina2(humedad As Double, numK As Double)
@@ -657,7 +666,7 @@
         Dim humedadInicial As Double
         Dim tiempoSiguiente As Double
         Dim humedadSiguiente As Double
-        Dim h = 0.01R
+        Dim h = 0.0001R
 
         tiempoInicial = 0.0R
         humedadInicial = humedad
@@ -668,8 +677,8 @@
             humedadInicial = humedadSiguiente
         Loop
         finSecado2_numK = numK
-        finSecado2_tiempoSecado = Math.Round(tiempoInicial, 2)
-        finSecado2_horaFin = Math.Round(reloj + tiempoInicial, 2)
+        finSecado2_tiempoSecado = Math.Round(tiempoInicial, 4)
+        finSecado2_horaFin = Math.Round(reloj + tiempoInicial, 4)
     End Sub
 
     Private Sub determinarFinSecadoSolo2(humedad As Double, numK As Double)
@@ -677,7 +686,7 @@
         Dim humedadInicial As Double
         Dim tiempoSiguiente As Double
         Dim humedadSiguiente As Double
-        Dim h = 0.01R
+        Dim h = 0.0001R
 
         tiempoInicial = 0.0R
         humedadInicial = humedad
@@ -688,51 +697,51 @@
             humedadInicial = humedadSiguiente
         Loop
         finSecado2_numK = numK
-        finSecado2_tiempoSecado = Math.Round(tiempoInicial, 2)
-        finSecado2_horaFin = Math.Round(reloj + tiempoInicial, 2)
+        finSecado2_tiempoSecado = Math.Round(tiempoInicial, 4)
+        finSecado2_horaFin = Math.Round(reloj + tiempoInicial, 4)
     End Sub
 
     Private Sub determinarFinAA()
-        'Do While (finAspirado_RND = -1 Or finAspirado_RND = 1)
-        finAspirado_RND = Math.Round(random.NextDouble(), 2)
-        'Loop
+        Do While (finAspirado_RND = -1 Or finAspirado_RND = 1)
+            finAspirado_RND = Math.Round(random.NextDouble(), 4)
+        Loop
         finAspirado_tiempoAspirado = finAspirado_RND * 2 + 3
-        finAspirado_horaFin = Math.Round(reloj + finAspirado_tiempoAspirado, 2)
+        finAspirado_horaFin = Math.Round(reloj + finAspirado_tiempoAspirado, 4)
     End Sub
 
     Private Sub determinarFinLavado1()
-        'Do While (finLavado1_RND = -1 Or finLavado1_RND = 1)
-        finLavado1_RND = Math.Round(random.NextDouble(), 2)
-        'Loop
+        Do While (finLavado1_RND = -1 Or finLavado1_RND = 1)
+            finLavado1_RND = Math.Round(random.NextDouble(), 4)
+        Loop
         finLavado1_tiempoLavado = finLavado1_RND * 6 + 6
-        finLavado1_horaFin = Math.Round(reloj + finLavado1_tiempoLavado, 2)
+        finLavado1_horaFin = Math.Round(reloj + finLavado1_tiempoLavado, 4)
     End Sub
 
     Private Sub determinarFinLavado2()
-        'Do While (finLavado2_RND = -1 Or finLavado2_RND = 1)
-        finLavado2_RND = Math.Round(random.NextDouble(), 2)
-        'Loop
+        Do While (finLavado2_RND = -1 Or finLavado2_RND = 1)
+            finLavado2_RND = Math.Round(random.NextDouble(), 4)
+        Loop
         finLavado2_tiempoLavado = finLavado2_RND * 6 + 6
-        finLavado2_horaFin = Math.Round(reloj + finLavado2_tiempoLavado, 2)
+        finLavado2_horaFin = Math.Round(reloj + finLavado2_tiempoLavado, 4)
     End Sub
 
     Private Sub determinarLlegadaAuto()
-        'Do While (llegadaAuto_RND = -1 Or llegadaAuto_RND = 1)
-        llegadaAuto_RND = Math.Round(random.NextDouble(), 2)
-        'Loop
-        llegadaAuto_tiempoEntreLlegadas = Math.Round((-10 * Math.Log(1 - llegadaAuto_RND)), 2)
-        llegadaAuto_horaLlegada = Math.Round(reloj + llegadaAuto_tiempoEntreLlegadas, 2)
+        Do While (llegadaAuto_RND = -1 Or llegadaAuto_RND = 1)
+            llegadaAuto_RND = Math.Round(random.NextDouble(), 2)
+        Loop
+        llegadaAuto_tiempoEntreLlegadas = Math.Round((-10 * Math.Log(1 - llegadaAuto_RND)), 4)
+        llegadaAuto_horaLlegada = Math.Round(reloj + llegadaAuto_tiempoEntreLlegadas, 4)
     End Sub
 
     Private Sub determinarFinQA()
         finQuitarAlfombra_tiempo = 2.0R
-        finQuitarAlfombra_horaFin = Math.Round(reloj + finQuitarAlfombra_tiempo, 2)
+        finQuitarAlfombra_horaFin = Math.Round(reloj + finQuitarAlfombra_tiempo, 4)
     End Sub
 
     Private Sub determinarTipoAuto(auto As Automovil)
-        'Do While (llegadaAuto_RND = -1 Or tipoAuto_RND = 1)
-        tipoAuto_RND = Math.Round(random.NextDouble(), 2)
-        'Loop
+        Do While (tipoAuto_RND = -1 Or tipoAuto_RND = 1)
+            tipoAuto_RND = Math.Round(random.NextDouble(), 4)
+        Loop
         If (tipoAuto_RND >= 0 And tipoAuto_RND <= 0.19) Then
             auto.tipo = "Pequeño"
             auto.numK = 0.75
@@ -778,7 +787,7 @@
     End Sub
 
     Public Sub crearTablaDatos()
-        'son 37 columnas las basicas
+        'son 38 columnas las basicas
         tablaDatos.Columns.Add("Evento", GetType(String))
         tablaDatos.Columns.Add("Tiempo Sistema", GetType(String))
         tablaDatos.Columns.Add("RND(LA)", GetType(String))
@@ -816,6 +825,7 @@
         tablaDatos.Columns.Add("Estado (PA)", GetType(String))
         tablaDatos.Columns.Add("Cola (PA)", GetType(String))
         tablaDatos.Columns.Add("Acu T. Atencion", GetType(String))
+        tablaDatos.Columns.Add("Acu T. Secadora", GetType(String))
     End Sub
 
     Private Sub cambiarColorColumnas()
